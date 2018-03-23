@@ -5,8 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,14 +19,20 @@ import dgsw.hs.kr.ahnt.school.SchoolMenu;
 
 public class MealPagerAdapter extends FragmentPagerAdapter {
 
-    int num_tab;
-    Calendar cal = Calendar.getInstance();
-    Map<String, List<SchoolMenu>> schoolMeals = new HashMap<>();
+    public static final int TOTAL_PAGE = 100000;
+    public static final int BASE = TOTAL_PAGE / 2;
+    private final Calendar base_cal = Calendar.getInstance();
+    private final Calendar cal = Calendar.getInstance();
+
+    private final Map<String, List<SchoolMenu>> schoolMeals = new HashMap<>();
 
     public static final String MEAL_CODE_PREFIX = "M";
 
     public MealPagerAdapter(FragmentManager fm) {
         super(fm);
+        base_cal.set(Calendar.HOUR, 0);
+        base_cal.set(Calendar.MINUTE, 0);
+        base_cal.set(Calendar.SECOND, 0);
     }
 
     public MealPagerAdapter(FragmentManager fm, String code, List<SchoolMenu> list) {
@@ -36,20 +42,52 @@ public class MealPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        List<SchoolMenu> list = schoolMeals.get(createMealCode(cal));
-        return MealTabFragment.NewInstance(list.get(position));
+        Calendar menuDate = getCalendarByPosition(position);
+        SchoolMenu menu = getSchoolMenuByCalendar(menuDate);
+        return MealTabFragment.NewInstance(menuDate, menu);
     }
 
     @Override
     public int getCount() {
-        int sum = 0;
+        return TOTAL_PAGE;
+    }
 
-        Iterator<String> itr = schoolMeals.keySet().iterator();
-        while (itr.hasNext()) {
-            String key = itr.next();
-            sum += schoolMeals.get(key).size();
+    public SchoolMenu getSchoolMenuByCalendar(Calendar calendar){
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        String mealCode = createMealCode(calendar);
+
+        List<SchoolMenu> list = schoolMeals.get(mealCode);
+        if(list == null){
+            return null;
         }
-        return sum;
+
+        return list.get(day - 1);
+    }
+
+    public Calendar getCalendarByPosition(int position) {
+        Calendar temp = (Calendar) base_cal.clone();
+        int offset = position - BASE;
+        temp.add(Calendar.DAY_OF_MONTH, offset);
+        return temp;
+    }
+
+    public int getPositionByCalendar(Calendar calPosition) {
+        int offset = getOffsetFromBaseCalendar(calPosition);
+        return BASE + offset;
+    }
+
+    public int getOffsetFromBaseCalendar(Calendar target) {
+        Date d1 = base_cal.getTime();
+
+        Date today = target.getTime();
+
+        long diff = today.getTime() - d1.getTime();
+        int offset = (int)(diff / (1000 * 60 * 60 * 24));
+
+        return offset;
     }
 
     private String createMealCode(Calendar day){
@@ -59,7 +97,7 @@ public class MealPagerAdapter extends FragmentPagerAdapter {
     }
 
     private boolean validateMealCode(String code){
-        String prefix = code.substring(1);
+        String prefix = code.substring(0, 1);
         if(!prefix.equals(MEAL_CODE_PREFIX)){
             return false;
         }
@@ -74,7 +112,8 @@ public class MealPagerAdapter extends FragmentPagerAdapter {
         schoolMeals.put(code, list);
     }
 
-    public Calendar getCalendar(){
-        return cal;
+    public Calendar getCalendar() {
+        return (Calendar) cal.clone();
     }
+
 }

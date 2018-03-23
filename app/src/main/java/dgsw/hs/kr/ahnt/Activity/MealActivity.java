@@ -7,6 +7,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -41,29 +42,7 @@ public class MealActivity extends AppCompatActivity {
         vp = (ViewPager) findViewById(R.id.viewPager);
         adapter = new MealPagerAdapter(getSupportFragmentManager());
 
-        MealTabFragment[] tabs = new MealTabFragment[3];
-        tabs[0] = MealTabFragment.NewInstance(null);
-        tabs[1] = MealTabFragment.NewInstance(null);
-        tabs[2] = MealTabFragment.NewInstance(null);
-
-        vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                if (state == ViewPager.SCROLL_STATE_IDLE) {
-
-                }
-            }
-        });
+        vp.setOffscreenPageLimit(3);
 
         new MealGetOperation().execute(Calendar.getInstance());
     }
@@ -101,7 +80,20 @@ public class MealActivity extends AppCompatActivity {
 
         @Override
         public void onDateSet(android.widget.DatePicker datePicker, int year, int month, int day) {
+            ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.viewPager);
+            MealPagerAdapter mpa = (MealPagerAdapter)viewPager.getAdapter();
 
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.YEAR, year);
+            cal.set(Calendar.MONTH, month);
+            cal.set(Calendar.DAY_OF_MONTH, day);
+
+            cal.set(Calendar.HOUR, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+
+            int pos = mpa.getPositionByCalendar(cal);
+            viewPager.setCurrentItem(pos);
         }
 
     }
@@ -110,7 +102,7 @@ public class MealActivity extends AppCompatActivity {
      * 원하는 년도와 월을 넣은 Calendar를 인자로 받아
      * 그 달의 급식 메뉴의 리스트를 반환한다.
      */
-    private class MealGetOperation extends AsyncTask<Calendar, Integer, List<SchoolMenu>> {
+    public class MealGetOperation extends AsyncTask<Calendar, Integer, List<SchoolMenu>> {
 
         Calendar cur;
 
@@ -124,11 +116,14 @@ public class MealActivity extends AppCompatActivity {
         protected List<SchoolMenu> doInBackground(Calendar... calendars) {
             School api = new School(School.Type.HIGH, School.Region.DAEGU, "D100000282");
 
-            if(calendars.length <= 0){
+            if (calendars.length <= 0) {
                 return null;
             }
 
             cur = calendars[0];
+            if (cur == null) {
+                return null;
+            }
 
             try {
                 List<SchoolMenu> menu = api.getMonthlyMenu(cur.get(Calendar.YEAR), cur.get(Calendar.MONTH) + 1);
@@ -148,10 +143,11 @@ public class MealActivity extends AppCompatActivity {
                 String mealCode = CreateMealCode(cur);
 
                 clProgress.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
 
                 adapter.putMonthlyMeal(mealCode, list);
                 vp.setAdapter(adapter);
-                vp.setCurrentItem(cur.get(Calendar.DAY_OF_MONTH) - 1);
+                vp.setCurrentItem(MealPagerAdapter.BASE);
             }
         }
 
