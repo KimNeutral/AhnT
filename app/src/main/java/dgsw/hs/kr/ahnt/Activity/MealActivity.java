@@ -2,12 +2,10 @@ package dgsw.hs.kr.ahnt.Activity;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -15,13 +13,13 @@ import java.util.Calendar;
 import java.util.List;
 
 import dgsw.hs.kr.ahnt.Adapter.MealPagerAdapter;
-import dgsw.hs.kr.ahnt.Fragment.MealTabFragment;
+import dgsw.hs.kr.ahnt.Interface.IPassValue;
+import dgsw.hs.kr.ahnt.Interface.IProgressBarControl;
+import dgsw.hs.kr.ahnt.Network.MealGetAsyncTask;
 import dgsw.hs.kr.ahnt.R;
-import dgsw.hs.kr.ahnt.school.School;
-import dgsw.hs.kr.ahnt.school.SchoolException;
-import dgsw.hs.kr.ahnt.school.SchoolMenu;
+import dgsw.hs.kr.ahnt.school.SchoolMonthlyMenu;
 
-public class MealActivity extends AppCompatActivity {
+public class MealActivity extends AppCompatActivity implements IProgressBarControl, IPassValue {
 
     public static final String MEAL_CODE_PREFIX = "M";
 
@@ -44,13 +42,44 @@ public class MealActivity extends AppCompatActivity {
 
         vp.setOffscreenPageLimit(3);
 
-        new MealGetOperation().execute(Calendar.getInstance());
+        new MealGetAsyncTask(this).execute(Calendar.getInstance());
     }
 
     private String CreateMealCode(Calendar day){
         String code = MEAL_CODE_PREFIX + day.get(Calendar.YEAR) + "" + (day.get(Calendar.MONTH) + 1);
 
         return code;
+    }
+
+    @Override
+    public void showProgressBar() {
+        clProgress.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        clProgress.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setProgressBarValue(int value) {
+        progressBar.setProgress(value);
+    }
+
+
+    @Override
+    public <T> void passValue(T value) {
+        if (value == null) {
+            return;
+        }
+
+        if (value.getClass() == SchoolMonthlyMenu.class) {
+            adapter.putMonthlyMeal((SchoolMonthlyMenu)value);
+            vp.setAdapter(adapter);
+            vp.setCurrentItem(MealPagerAdapter.BASE);
+        }
     }
 
     /**
@@ -98,63 +127,4 @@ public class MealActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * 원하는 년도와 월을 넣은 Calendar를 인자로 받아
-     * 그 달의 급식 메뉴의 리스트를 반환한다.
-     */
-    public class MealGetOperation extends AsyncTask<Calendar, Integer, List<SchoolMenu>> {
-
-        Calendar cur;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            clProgress.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected List<SchoolMenu> doInBackground(Calendar... calendars) {
-            School api = new School(School.Type.HIGH, School.Region.DAEGU, "D100000282");
-
-            if (calendars.length <= 0) {
-                return null;
-            }
-
-            cur = calendars[0];
-            if (cur == null) {
-                return null;
-            }
-
-            try {
-                List<SchoolMenu> menu = api.getMonthlyMenu(cur.get(Calendar.YEAR), cur.get(Calendar.MONTH) + 1);
-
-                return menu;
-            } catch (SchoolException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List<SchoolMenu> list) {
-            super.onPostExecute(list);
-
-            if (cur != null) {
-                String mealCode = CreateMealCode(cur);
-
-                clProgress.setVisibility(View.GONE);
-                progressBar.setVisibility(View.GONE);
-
-                adapter.putMonthlyMeal(mealCode, list);
-                vp.setAdapter(adapter);
-                vp.setCurrentItem(MealPagerAdapter.BASE);
-            }
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-            progressBar.setProgress(values[0]);
-        }
-    }
 }
