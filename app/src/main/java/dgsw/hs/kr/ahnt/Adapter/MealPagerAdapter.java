@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import dgsw.hs.kr.ahnt.Fragment.MealTabFragment;
+import dgsw.hs.kr.ahnt.Helper.MealHelper;
 import dgsw.hs.kr.ahnt.school.SchoolMenu;
+import dgsw.hs.kr.ahnt.school.SchoolMonthlyMenu;
 
 /**
  * Created by neutral on 19/03/2018.
@@ -25,8 +27,6 @@ public class MealPagerAdapter extends FragmentPagerAdapter {
     private final Calendar cal = Calendar.getInstance();
 
     private final Map<String, List<SchoolMenu>> schoolMeals = new HashMap<>();
-
-    public static final String MEAL_CODE_PREFIX = "M";
 
     public MealPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -43,28 +43,13 @@ public class MealPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Calendar menuDate = getCalendarByPosition(position);
-        SchoolMenu menu = getSchoolMenuByCalendar(menuDate);
+        SchoolMenu menu = MealHelper.getSchoolMenuByCalendar(menuDate, schoolMeals);
         return MealTabFragment.NewInstance(menuDate, menu);
     }
 
     @Override
     public int getCount() {
         return TOTAL_PAGE;
-    }
-
-    public SchoolMenu getSchoolMenuByCalendar(Calendar calendar){
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        String mealCode = createMealCode(calendar);
-
-        List<SchoolMenu> list = schoolMeals.get(mealCode);
-        if(list == null){
-            return null;
-        }
-
-        return list.get(day - 1);
     }
 
     public Calendar getCalendarByPosition(int position) {
@@ -90,26 +75,20 @@ public class MealPagerAdapter extends FragmentPagerAdapter {
         return offset;
     }
 
-    private String createMealCode(Calendar day){
-        String code = MEAL_CODE_PREFIX + day.get(Calendar.YEAR) + "" + (day.get(Calendar.MONTH) + 1);
-
-        return code;
-    }
-
-    private boolean validateMealCode(String code){
-        String prefix = code.substring(0, 1);
-        if(!prefix.equals(MEAL_CODE_PREFIX)){
-            return false;
-        }
-        return true;
-    }
-
-    public void putMonthlyMeal(String code, List<SchoolMenu> list){
-        if(!validateMealCode(code)){
+    public void putMonthlyMeal(String code, List<SchoolMenu> list) {
+        if (!MealHelper.validateMealCode(code)) {
             return;
         }
 
         schoolMeals.put(code, list);
+    }
+
+    public void putMonthlyMeal(Calendar date, List<SchoolMenu> list) {
+        putMonthlyMeal(MealHelper.createMealCode(date), list);
+    }
+
+    public void putMonthlyMeal(SchoolMonthlyMenu monthlyMenu) {
+        putMonthlyMeal(monthlyMenu.getDate(), monthlyMenu.getMenus());
     }
 
     public Calendar getCalendar() {
