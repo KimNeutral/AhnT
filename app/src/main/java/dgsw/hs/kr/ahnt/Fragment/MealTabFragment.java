@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
@@ -29,6 +30,8 @@ public class MealTabFragment extends Fragment {
     TextView tvMeal;
     TextView tvCal;
 
+    Button btnDownload;
+
     public MealTabFragment() {
         // Required empty public constructor
     }
@@ -44,9 +47,13 @@ public class MealTabFragment extends Fragment {
         this.cal = cal;
         this.menu = menu;
 
-        if(menu != null){
+        if (menu != null) {
             if (tvMeal != null) {
                 tvMeal.setText(menu.toString());
+            }
+        } else {
+            if (tvMeal != null) {
+                btnDownload.setVisibility(View.VISIBLE);
             }
         }
 
@@ -64,6 +71,7 @@ public class MealTabFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_meal_tab, container, false);
         tvMeal = (TextView) view.findViewById(R.id.tvMeal);
         tvCal = (TextView) view.findViewById(R.id.tvCalendar);
+        btnDownload = (Button) view.findViewById(R.id.btnDownload);
 
         updateUI(cal, menu);
 
