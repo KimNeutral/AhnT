@@ -28,7 +28,7 @@ public class School {
         this.schoolCode = schoolCode;
     }
 
-    public List<SchoolMenu> getMonthlyMenu(int year, int month) throws SchoolException {
+    public SchoolMonthlyMenu getMonthlyMenu(int year, int month) throws SchoolException {
         StringBuffer targetUrl = new StringBuffer("https://" + this.schoolRegion.url + "/" + "sts_sci_md00_001.do");
         targetUrl.append("?");
         targetUrl.append("schulCode=" + this.schoolCode + "&");

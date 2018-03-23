@@ -15,7 +15,7 @@ public class SchoolMenuParser {
     public SchoolMenuParser() {
     }
 
-    public static List<SchoolMenu> parse(String rawData, Calendar cal) throws SchoolException {
+    public static SchoolMonthlyMenu parse(String rawData, Calendar cal) throws SchoolException {
         if(rawData.length() < 1) {
             throw new SchoolException("불러온 데이터가 올바르지 않습니다.");
         } else {
@@ -44,8 +44,8 @@ public class SchoolMenuParser {
                         buffer.append(rawData.charAt(i));
                     }
                 }
-
-                return monthlyMenu;
+                cal.set(Calendar.DAY_OF_MONTH, 1);
+                return new SchoolMonthlyMenu(cal, monthlyMenu);
             } catch (Exception var5) {
                 throw new SchoolException("급식 정보 파싱에 실패했습니다. 최신 버전으로 업데이트 해 주세요.");
             }
