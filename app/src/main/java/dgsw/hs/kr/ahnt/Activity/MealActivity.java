@@ -75,7 +75,6 @@ public class MealActivity extends AppCompatActivity implements IProgressBarContr
             return;
         }
 
-        adapter = new MealPagerAdapter(getSupportFragmentManager(), adapter.getSchoolMeals());
         adapter.putMonthlyMeal(value);
         int bPos = vp.getCurrentItem();
         vp.setAdapter(adapter);
