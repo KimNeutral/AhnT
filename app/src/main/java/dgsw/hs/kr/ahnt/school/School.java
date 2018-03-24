@@ -39,6 +39,7 @@ public class School {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month - 1);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
 
         try {
             String content = this.getContentFromUrl(new URL(targetUrl.toString()), "<tbody>", "</tbody>");
