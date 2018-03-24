@@ -2,7 +2,8 @@ package dgsw.hs.kr.ahnt.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -19,14 +20,14 @@ import dgsw.hs.kr.ahnt.school.SchoolMonthlyMenu;
  * Created by neutral on 19/03/2018.
  */
 
-public class MealPagerAdapter extends FragmentPagerAdapter {
+public class MealPagerAdapter extends FragmentStatePagerAdapter {
 
     public static final int TOTAL_PAGE = 100000;
     public static final int BASE = TOTAL_PAGE / 2;
     private final Calendar base_cal = Calendar.getInstance();
     private final Calendar cal = Calendar.getInstance();
 
-    private final Map<String, List<SchoolMenu>> schoolMeals = new HashMap<>();
+    private Map<String, List<SchoolMenu>> schoolMeals = new HashMap<>();
 
     public MealPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -38,6 +39,16 @@ public class MealPagerAdapter extends FragmentPagerAdapter {
     public MealPagerAdapter(FragmentManager fm, String code, List<SchoolMenu> list) {
         super(fm);
         schoolMeals.put(code, list);
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        MealTabFragment f = (MealTabFragment) object;
+        if (f != null) {
+            f.updateUI(f.getCal(), MealHelper.getSchoolMenuByCalendar(f.getCal(), schoolMeals));
+            Log.d("", f.getCal().get(Calendar.YEAR) + "-" + f.getCal().get(Calendar.MONTH));
+        }
+        return super.getItemPosition(object);
     }
 
     @Override
@@ -95,4 +106,7 @@ public class MealPagerAdapter extends FragmentPagerAdapter {
         return (Calendar) cal.clone();
     }
 
+    public Map<String, List<SchoolMenu>> getSchoolMeals() {
+        return schoolMeals;
+    }
 }

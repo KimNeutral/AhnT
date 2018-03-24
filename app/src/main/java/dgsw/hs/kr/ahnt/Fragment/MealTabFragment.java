@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import dgsw.hs.kr.ahnt.Activity.MealActivity;
+import dgsw.hs.kr.ahnt.Network.MealGetAsyncTask;
 import dgsw.hs.kr.ahnt.R;
 import dgsw.hs.kr.ahnt.school.SchoolMenu;
 
@@ -72,6 +73,14 @@ public class MealTabFragment extends Fragment {
         tvMeal = (TextView) view.findViewById(R.id.tvMeal);
         tvCal = (TextView) view.findViewById(R.id.tvCalendar);
         btnDownload = (Button) view.findViewById(R.id.btnDownload);
+
+        btnDownload.setOnClickListener(e -> {
+            if (!(getActivity() instanceof MealActivity)) {
+                return;
+            }
+            MealActivity activity = (MealActivity)getActivity();
+            new MealGetAsyncTask(activity).execute(cal);
+        });
 
         updateUI(cal, menu);
 
