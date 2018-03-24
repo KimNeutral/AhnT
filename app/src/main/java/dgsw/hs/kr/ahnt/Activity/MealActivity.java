@@ -19,7 +19,7 @@ import dgsw.hs.kr.ahnt.Network.MealGetAsyncTask;
 import dgsw.hs.kr.ahnt.R;
 import dgsw.hs.kr.ahnt.school.SchoolMonthlyMenu;
 
-public class MealActivity extends AppCompatActivity implements IProgressBarControl, IPassValue {
+public class MealActivity extends AppCompatActivity implements IProgressBarControl, IPassValue<SchoolMonthlyMenu> {
 
     public static final String MEAL_CODE_PREFIX = "M";
 
@@ -70,16 +70,21 @@ public class MealActivity extends AppCompatActivity implements IProgressBarContr
 
 
     @Override
-    public <T> void passValue(T value) {
+    public void passValue(SchoolMonthlyMenu value) {
         if (value == null) {
             return;
         }
 
-        if (value.getClass() == SchoolMonthlyMenu.class) {
-            adapter.putMonthlyMeal((SchoolMonthlyMenu)value);
-            vp.setAdapter(adapter);
-            vp.setCurrentItem(MealPagerAdapter.BASE);
+        adapter = new MealPagerAdapter(getSupportFragmentManager(), adapter.getSchoolMeals());
+        adapter.putMonthlyMeal(value);
+        int bPos = vp.getCurrentItem();
+        vp.setAdapter(adapter);
+
+        if (bPos == 0) {
+            bPos = MealPagerAdapter.BASE;
         }
+        vp.setCurrentItem(bPos);
+        adapter.notifyDataSetChanged();
     }
 
     /**
