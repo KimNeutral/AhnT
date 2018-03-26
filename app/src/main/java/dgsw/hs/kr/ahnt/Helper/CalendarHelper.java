@@ -14,25 +14,37 @@ public class CalendarHelper {
 
     public static Calendar CreateCalendar(int year, int month, int day) {
         Calendar cal = CreateCalendar();
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, month);
-        cal.set(Calendar.DAY_OF_MONTH, day);
-
-        cal.set(Calendar.HOUR, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
+        set(cal, year, month, day, 0, 0, 0);
         return cal;
     }
 
     public static Calendar CreateCalendar(int year, int month, int day, int hour, int min, int sec) {
         Calendar cal = CreateCalendar();
+        set(cal, year, month, day, hour, min, sec);
+
+        return cal;
+    }
+
+    public static Calendar set(Calendar cal, int year, int month, int day) {
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
         cal.set(Calendar.DAY_OF_MONTH, day);
 
+        return cal;
+    }
+
+    public static Calendar set(Calendar cal, int year, int month, int day, int hour, int min, int sec) {
+        set(cal, year, month, day);
+        setTime(cal, hour, min, sec);
+
+        return cal;
+    }
+
+    public static Calendar setTime(Calendar cal, int hour, int min, int sec) {
         cal.set(Calendar.HOUR, hour);
         cal.set(Calendar.MINUTE, min);
         cal.set(Calendar.SECOND, sec);
+
         return cal;
     }
 }
