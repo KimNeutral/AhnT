@@ -74,7 +74,11 @@ public class MealActivity extends AppCompatActivity implements IProgressBarContr
 
         if (bPos == 0) {
             bPos = MealPagerAdapter.BASE;
+            if (MealHelper.getMealDayStatus(CalendarHelper.CreateCalendar()).equals("next")) {
+                bPos++;
+            }
         }
+
         vp.setCurrentItem(bPos);
         adapter.notifyDataSetChanged();
     }
@@ -113,9 +117,6 @@ public class MealActivity extends AppCompatActivity implements IProgressBarContr
 
             int pos = mpa.getPositionByCalendar(cal);
 
-            if (MealHelper.getMealDayStatus(CalendarHelper.CreateCalendar()).equals("next")) {
-                pos++;
-            }
             viewPager.setCurrentItem(pos);
         }
 
