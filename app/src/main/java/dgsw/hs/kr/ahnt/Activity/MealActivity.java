@@ -22,8 +22,6 @@ import dgsw.hs.kr.ahnt.school.SchoolMonthlyMenu;
 
 public class MealActivity extends AppCompatActivity implements IProgressBarControl, IPassValue<SchoolMonthlyMenu> {
 
-    public static final String MEAL_CODE_PREFIX = "M";
-
     ProgressBar progressBar;
     ConstraintLayout clProgress;
 
@@ -46,12 +44,6 @@ public class MealActivity extends AppCompatActivity implements IProgressBarContr
         new MealGetAsyncTask(this).execute(CalendarHelper.CreateCalendar());
     }
 
-    private String CreateMealCode(Calendar day){
-        String code = MEAL_CODE_PREFIX + day.get(Calendar.YEAR) + "" + (day.get(Calendar.MONTH) + 1);
-
-        return code;
-    }
-
     @Override
     public void showProgressBar() {
         clProgress.setVisibility(View.VISIBLE);
@@ -68,7 +60,6 @@ public class MealActivity extends AppCompatActivity implements IProgressBarContr
     public void setProgressBarValue(int value) {
         progressBar.setProgress(value);
     }
-
 
     @Override
     public void passValue(SchoolMonthlyMenu value) {
