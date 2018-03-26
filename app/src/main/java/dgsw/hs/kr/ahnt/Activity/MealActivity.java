@@ -14,6 +14,7 @@ import java.util.List;
 
 import dgsw.hs.kr.ahnt.Adapter.MealPagerAdapter;
 import dgsw.hs.kr.ahnt.Helper.CalendarHelper;
+import dgsw.hs.kr.ahnt.Helper.MealHelper;
 import dgsw.hs.kr.ahnt.Interface.IPassValue;
 import dgsw.hs.kr.ahnt.Interface.IProgressBarControl;
 import dgsw.hs.kr.ahnt.Network.MealGetAsyncTask;
@@ -111,6 +112,10 @@ public class MealActivity extends AppCompatActivity implements IProgressBarContr
             Calendar cal = CalendarHelper.CreateCalendar(year, month, day);
 
             int pos = mpa.getPositionByCalendar(cal);
+
+            if (MealHelper.getMealDayStatus(CalendarHelper.CreateCalendar()).equals("next")) {
+                pos++;
+            }
             viewPager.setCurrentItem(pos);
         }
 

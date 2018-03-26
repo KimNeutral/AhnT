@@ -1,6 +1,5 @@
 package dgsw.hs.kr.ahnt.Fragment;
 
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,14 +9,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
-
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import dgsw.hs.kr.ahnt.Activity.MealActivity;
+import dgsw.hs.kr.ahnt.Helper.CalendarHelper;
+import dgsw.hs.kr.ahnt.Helper.MealHelper;
 import dgsw.hs.kr.ahnt.Network.MealGetAsyncTask;
 import dgsw.hs.kr.ahnt.R;
 import dgsw.hs.kr.ahnt.school.SchoolMenu;
@@ -80,21 +79,41 @@ public class MealTabFragment extends Fragment {
             navigationView.setSelectedItemId(R.id.navigation_breakfast);
         }
 
-        if (menu != null) {
-            if (tvMeal != null) {
-                tvMeal.setText(menu.breakfast);
-            }
-        } else {
-            if (tvMeal != null) {
-                showDownloadButton();
-            }
-        }
+        InitMealText();
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy년 MM월 dd일");
         if (cal != null) {
             if (tvCal != null) {
                 tvCal.setText(df.format(cal.getTime()));
             }
+        }
+    }
+
+    public void InitMealText(){
+        if (tvMeal == null || navigationView == null) {
+            return;
+        }
+
+        if (menu == null) {
+            showDownloadButton();
+            return;
+        }
+
+        String meal = MealHelper.getMealDayStatus(cal);
+
+        switch (meal) {
+            case "breakfast":
+                tvMeal.setText(menu.breakfast);
+                navigationView.setSelectedItemId(R.id.navigation_breakfast);
+                break;
+            case "lunch":
+                tvMeal.setText(menu.lunch);
+                navigationView.setSelectedItemId(R.id.navigation_lunch);
+                break;
+            case "dinner":
+            case "next":
+                tvMeal.setText(menu.dinner);
+                navigationView.setSelectedItemId(R.id.navigation_dinner);
         }
     }
 
