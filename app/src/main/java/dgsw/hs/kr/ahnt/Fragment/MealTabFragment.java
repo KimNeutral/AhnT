@@ -2,8 +2,11 @@ package dgsw.hs.kr.ahnt.Fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,6 +36,31 @@ public class MealTabFragment extends Fragment {
 
     Button btnDownload;
 
+    BottomNavigationView navigationView;
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            if (menu == null) {
+                return false;
+            }
+            switch (item.getItemId()) {
+                case R.id.navigation_breakfast:
+                    tvMeal.setText(menu.breakfast);
+                    return true;
+                case R.id.navigation_lunch:
+                    tvMeal.setText(menu.lunch);
+                    return true;
+                case R.id.navigation_dinner:
+                    tvMeal.setText(menu.dinner);
+                    return true;
+            }
+            return false;
+        }
+    };
+
     public MealTabFragment() {
         // Required empty public constructor
     }
@@ -48,13 +76,17 @@ public class MealTabFragment extends Fragment {
         this.cal = cal;
         this.menu = menu;
 
+        if (navigationView != null) {
+            navigationView.setSelectedItemId(R.id.navigation_breakfast);
+        }
+
         if (menu != null) {
             if (tvMeal != null) {
-                tvMeal.setText(menu.toString());
+                tvMeal.setText(menu.breakfast);
             }
         } else {
             if (tvMeal != null) {
-                btnDownload.setVisibility(View.VISIBLE);
+                showDownloadButton();
             }
         }
 
@@ -73,6 +105,8 @@ public class MealTabFragment extends Fragment {
         tvMeal = (TextView) view.findViewById(R.id.tvMeal);
         tvCal = (TextView) view.findViewById(R.id.tvCalendar);
         btnDownload = (Button) view.findViewById(R.id.btnDownload);
+        navigationView = (BottomNavigationView) view.findViewById(R.id.navigation);
+        navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         btnDownload.setOnClickListener(e -> {
             if (!(getActivity() instanceof MealActivity)) {
@@ -98,6 +132,17 @@ public class MealTabFragment extends Fragment {
         // Inflate the layout for this fragment
         return view;
     }
+
+    public void showDownloadButton() {
+        btnDownload.setVisibility(View.VISIBLE);
+        navigationView.setVisibility(View.INVISIBLE);
+    }
+
+    public void hideDownloadButton() {
+        btnDownload.setVisibility(View.INVISIBLE);
+        navigationView.setVisibility(View.VISIBLE);
+    }
+
 
     public Calendar getCal() {
         return cal;

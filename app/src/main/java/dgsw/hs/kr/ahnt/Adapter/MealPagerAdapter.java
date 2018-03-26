@@ -23,7 +23,7 @@ import dgsw.hs.kr.ahnt.school.SchoolMonthlyMenu;
 
 public class MealPagerAdapter extends FragmentStatePagerAdapter {
 
-    public static final int TOTAL_PAGE = 100000;
+    public static final int TOTAL_PAGE = 10000;
     public static final int BASE = TOTAL_PAGE / 2;
     private final Calendar base_cal = CalendarHelper.CreateCalendar();
 
