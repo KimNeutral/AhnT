@@ -52,7 +52,7 @@ public class MealHelper {
                 if (min >= 50) {
                     meal = "dinner";
                 }
-            } else if (hour <= 16) {
+            } else if (hour <= 18) {
                 meal = "dinner";
                 if (min >= 50) {
                     meal = "next";
