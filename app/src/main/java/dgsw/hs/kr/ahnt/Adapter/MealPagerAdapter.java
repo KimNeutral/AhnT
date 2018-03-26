@@ -26,7 +26,6 @@ public class MealPagerAdapter extends FragmentStatePagerAdapter {
     public static final int TOTAL_PAGE = 100000;
     public static final int BASE = TOTAL_PAGE / 2;
     private final Calendar base_cal = CalendarHelper.CreateCalendar();
-    private final Calendar cal = CalendarHelper.CreateCalendar();
 
     private Map<String, List<SchoolMenu>> schoolMeals = new HashMap<>();
 
@@ -101,10 +100,6 @@ public class MealPagerAdapter extends FragmentStatePagerAdapter {
 
     public void putMonthlyMeal(SchoolMonthlyMenu monthlyMenu) {
         putMonthlyMeal(monthlyMenu.getDate(), monthlyMenu.getMenus());
-    }
-
-    public Calendar getCalendar() {
-        return (Calendar) cal.clone();
     }
 
     public Map<String, List<SchoolMenu>> getSchoolMeals() {
