@@ -38,7 +38,7 @@ public class School {
         targetUrl.append("schulKndScCode=0" + this.schoolType.id + "&");
         targetUrl.append("schYm=" + year + String.format("%02d", new Object[]{Integer.valueOf(month)}) + "&");
 
-        Calendar cal = CalendarHelper.CreateCalendar(year, month, 1);
+        Calendar cal = CalendarHelper.CreateCalendar(year, month - 1, 1);
 
         try {
             String content = this.getContentFromUrl(new URL(targetUrl.toString()), "<tbody>", "</tbody>");
