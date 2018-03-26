@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
 
+import dgsw.hs.kr.ahnt.Helper.CalendarHelper;
+
 /**
  * School API
  * 전국 교육청 소속 교육기관의 학사일정, 메뉴를 간단히 불러올 수 있습니다.
@@ -36,10 +38,7 @@ public class School {
         targetUrl.append("schulKndScCode=0" + this.schoolType.id + "&");
         targetUrl.append("schYm=" + year + String.format("%02d", new Object[]{Integer.valueOf(month)}) + "&");
 
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, month - 1);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Calendar cal = CalendarHelper.CreateCalendar(year, month, 1);
 
         try {
             String content = this.getContentFromUrl(new URL(targetUrl.toString()), "<tbody>", "</tbody>");

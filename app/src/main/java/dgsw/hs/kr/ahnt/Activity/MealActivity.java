@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import dgsw.hs.kr.ahnt.Adapter.MealPagerAdapter;
+import dgsw.hs.kr.ahnt.Helper.CalendarHelper;
 import dgsw.hs.kr.ahnt.Interface.IPassValue;
 import dgsw.hs.kr.ahnt.Interface.IProgressBarControl;
 import dgsw.hs.kr.ahnt.Network.MealGetAsyncTask;
@@ -42,7 +43,7 @@ public class MealActivity extends AppCompatActivity implements IProgressBarContr
 
         vp.setOffscreenPageLimit(3);
 
-        new MealGetAsyncTask(this).execute(Calendar.getInstance());
+        new MealGetAsyncTask(this).execute(CalendarHelper.CreateCalendar());
     }
 
     private String CreateMealCode(Calendar day){
@@ -116,14 +117,7 @@ public class MealActivity extends AppCompatActivity implements IProgressBarContr
             ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.viewPager);
             MealPagerAdapter mpa = (MealPagerAdapter)viewPager.getAdapter();
 
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.YEAR, year);
-            cal.set(Calendar.MONTH, month);
-            cal.set(Calendar.DAY_OF_MONTH, day);
-
-            cal.set(Calendar.HOUR, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
+            Calendar cal = CalendarHelper.CreateCalendar(year, month, day);
 
             int pos = mpa.getPositionByCalendar(cal);
             viewPager.setCurrentItem(pos);

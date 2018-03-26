@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import dgsw.hs.kr.ahnt.Fragment.MealTabFragment;
+import dgsw.hs.kr.ahnt.Helper.CalendarHelper;
 import dgsw.hs.kr.ahnt.Helper.MealHelper;
 import dgsw.hs.kr.ahnt.school.SchoolMenu;
 import dgsw.hs.kr.ahnt.school.SchoolMonthlyMenu;
@@ -24,8 +25,8 @@ public class MealPagerAdapter extends FragmentStatePagerAdapter {
 
     public static final int TOTAL_PAGE = 100000;
     public static final int BASE = TOTAL_PAGE / 2;
-    private final Calendar base_cal = Calendar.getInstance();
-    private final Calendar cal = Calendar.getInstance();
+    private final Calendar base_cal = CalendarHelper.CreateCalendar();
+    private final Calendar cal = CalendarHelper.CreateCalendar();
 
     private Map<String, List<SchoolMenu>> schoolMeals = new HashMap<>();
 
