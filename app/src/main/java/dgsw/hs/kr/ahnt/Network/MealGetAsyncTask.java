@@ -69,9 +69,7 @@ public class MealGetAsyncTask extends AsyncTask<Calendar, Integer, SchoolMonthly
         if (cur != null) {
             String mealCode = MealHelper.createMealCode(cur);
 
-            if (passable instanceof IPassValue) {
-                ((IPassValue)passable).passValue(menu);
-            }
+            passable.passValue(menu);
 
             if (passable instanceof IProgressBarControl) {
                 ((IProgressBarControl)passable).hideProgressBar();
