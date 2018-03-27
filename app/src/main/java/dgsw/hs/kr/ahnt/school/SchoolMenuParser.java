@@ -1,5 +1,7 @@
 package dgsw.hs.kr.ahnt.school;
 
+import org.unbescape.html.HtmlEscape;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -72,26 +74,27 @@ public class SchoolMenuParser {
                     parsingMode = 2;
                     menu.dinner = "";
                 } else {
+                    final String mealText = HtmlEscape.unescapeHtml(chunk[i]);
                     switch(parsingMode) {
                         case 0:
                             if(menu.breakfast.length() > 1) {
-                                menu.breakfast = menu.breakfast + "\n" + chunk[i];
+                                menu.breakfast = menu.breakfast + "\n" + mealText;
                             } else {
-                                menu.breakfast = menu.breakfast + chunk[i];
+                                menu.breakfast = menu.breakfast + mealText;
                             }
                             break;
                         case 1:
                             if(menu.lunch.length() > 1) {
-                                menu.lunch = menu.lunch + "\n" + chunk[i];
+                                menu.lunch = menu.lunch + "\n" + mealText;
                             } else {
-                                menu.lunch = menu.lunch + chunk[i];
+                                menu.lunch = menu.lunch + mealText;
                             }
                             break;
                         case 2:
                             if(menu.dinner.length() > 1) {
-                                menu.dinner = menu.dinner + "\n" + chunk[i];
+                                menu.dinner = menu.dinner + "\n" + mealText;
                             } else {
-                                menu.dinner = menu.dinner + chunk[i];
+                                menu.dinner = menu.dinner + mealText;
                             }
                     }
                 }
