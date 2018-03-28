@@ -9,7 +9,7 @@ import java.util.TimeZone;
 
 public class CalendarHelper {
     public static Calendar CreateCalendar() {
-        return Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"));
+        return Calendar.getInstance(TimeZoneHelper.getLocalTimeZone());
     }
 
     public static Calendar CreateCalendar(int year, int month, int day) {

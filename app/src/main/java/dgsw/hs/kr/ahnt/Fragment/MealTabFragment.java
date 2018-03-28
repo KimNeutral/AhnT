@@ -13,10 +13,12 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import dgsw.hs.kr.ahnt.Activity.MealActivity;
 import dgsw.hs.kr.ahnt.Helper.CalendarHelper;
 import dgsw.hs.kr.ahnt.Helper.MealHelper;
+import dgsw.hs.kr.ahnt.Helper.TimeZoneHelper;
 import dgsw.hs.kr.ahnt.Network.MealGetAsyncTask;
 import dgsw.hs.kr.ahnt.R;
 import dgsw.hs.kr.ahnt.school.SchoolMenu;
@@ -82,6 +84,7 @@ public class MealTabFragment extends Fragment {
         InitMealText();
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy년 MM월 dd일");
+        df.setTimeZone(TimeZoneHelper.getLocalTimeZone());
         if (cal != null) {
             if (tvCal != null) {
                 tvCal.setText(df.format(cal.getTime()));
