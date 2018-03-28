@@ -23,7 +23,7 @@ import dgsw.hs.kr.ahnt.school.SchoolMonthlyMenu;
 
 public class MealPagerAdapter extends FragmentStatePagerAdapter {
 
-    public static final int TOTAL_PAGE = 10000;
+    public static final int TOTAL_PAGE = 100000;
     public static final int BASE = TOTAL_PAGE / 2;
     private final Calendar base_cal = CalendarHelper.CreateCalendar();
 
@@ -75,7 +75,8 @@ public class MealPagerAdapter extends FragmentStatePagerAdapter {
         return BASE + offset;
     }
 
-    public int getOffsetFromBaseCalendar(Calendar target) {
+    private int getOffsetFromBaseCalendar(Calendar target) {
+        //TODO : 부정확한 오프셋 구하는거 고치기.
         Date d1 = base_cal.getTime();
 
         Date today = target.getTime();
