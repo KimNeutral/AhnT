@@ -41,7 +41,7 @@ public class CalendarHelper {
     }
 
     public static Calendar setTime(Calendar cal, int hour, int min, int sec) {
-        cal.set(Calendar.HOUR, hour);
+        cal.set(Calendar.HOUR_OF_DAY, hour);
         cal.set(Calendar.MINUTE, min);
         cal.set(Calendar.SECOND, sec);
 
