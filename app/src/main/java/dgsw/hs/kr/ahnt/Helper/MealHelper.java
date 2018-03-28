@@ -49,12 +49,12 @@ public class MealHelper {
                 }
             } else if (hour <= 12) {
                 meal = "lunch";
-                if (min >= 50) {
+                if (hour == 12 && min >= 50) {
                     meal = "dinner";
                 }
             } else if (hour <= 18) {
                 meal = "dinner";
-                if (min >= 50) {
+                if (hour == 18 && min >= 50) {
                     meal = "next";
                 }
             } else {
