@@ -1,5 +1,7 @@
 package dgsw.hs.kr.ahnt.Helper;
 
+import android.util.Pair;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +16,7 @@ public class MealHelper {
 
     public static final String MEAL_CODE_PREFIX = "M";
 
-    public static SchoolMenu getSchoolMenuByCalendar(Calendar calendar, Map<String, List<SchoolMenu>> schoolMeals){
+    public static SchoolMenu getSchoolMenuByCalendar(Calendar calendar, Map<String, List<SchoolMenu>> schoolMeals) {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -22,14 +24,14 @@ public class MealHelper {
         String mealCode = createMealCode(calendar);
 
         List<SchoolMenu> list = schoolMeals.get(mealCode);
-        if(list == null){
+        if (list == null) {
             return null;
         }
 
         return list.get(day - 1);
     }
 
-    public static String getMealDayStatus(Calendar cal){
+    public static String getMealDayStatus(Calendar cal) {
         Calendar tcal = CalendarHelper.CreateCalendar();
         int year = tcal.get(Calendar.YEAR);
         int month = tcal.get(Calendar.MONTH);
@@ -38,23 +40,25 @@ public class MealHelper {
         String meal = "breakfast";
 
         if (year == cal.get(Calendar.YEAR) && month == cal.get(Calendar.MONTH) && day == cal.get(Calendar.DAY_OF_MONTH)) {
+            MealTimeTable mealTime = GetTodayMealTimeTable();
+
             int hour = tcal.get(Calendar.HOUR_OF_DAY);
             int min = tcal.get(Calendar.MINUTE);
 
 
-            if (hour <= 7) {
+            if (hour <= mealTime.breakfast.first) {
                 meal = "breakfast";
-                if (hour == 7 && min >= 40) {
+                if (hour == mealTime.breakfast.first && min >= mealTime.breakfast.second) {
                     meal = "lunch";
                 }
-            } else if (hour <= 12) {
+            } else if (hour <= mealTime.lunch.first) {
                 meal = "lunch";
-                if (hour == 12 && min >= 50) {
+                if (hour == mealTime.lunch.first && min >= mealTime.lunch.second) {
                     meal = "dinner";
                 }
-            } else if (hour <= 18) {
+            } else if (hour <= mealTime.dinner.first) {
                 meal = "dinner";
-                if (hour == 18 && min >= 50) {
+                if (hour == mealTime.dinner.first && min >= mealTime.dinner.second) {
                     meal = "next";
                 }
             } else {
@@ -65,17 +69,43 @@ public class MealHelper {
         return meal;
     }
 
-    public static String createMealCode(Calendar day){
+    public static String createMealCode(Calendar day) {
         String code = MEAL_CODE_PREFIX + day.get(Calendar.YEAR) + "" + (day.get(Calendar.MONTH) + 1);
 
         return code;
     }
 
-    public static boolean validateMealCode(String code){
+    public static boolean validateMealCode(String code) {
         String prefix = code.substring(0, 1);
-        if(!prefix.equals(MEAL_CODE_PREFIX)){
+        if (!prefix.equals(MEAL_CODE_PREFIX)) {
             return false;
         }
         return true;
     }
+
+    public static MealTimeTable GetTodayMealTimeTable() {
+        Calendar cal = CalendarHelper.CreateCalendar();
+        int day = cal.get(Calendar.DAY_OF_WEEK);
+
+        if (day == Calendar.SATURDAY || day == Calendar.SUNDAY) {
+            return MealTimeTable.WEEKEND_MEALTIME;
+        }
+        return MealTimeTable.WEEKDAY_MEALTIME;
+    }
+
+    public static class MealTimeTable {
+        static MealTimeTable WEEKDAY_MEALTIME = new MealTimeTable(Pair.create(7, 30), Pair.create(12, 50), Pair.create(18, 50));
+        static MealTimeTable WEEKEND_MEALTIME = new MealTimeTable(Pair.create(8, 30), Pair.create(12, 00), Pair.create(18, 50));
+
+        Pair<Integer, Integer> breakfast;
+        Pair<Integer, Integer> lunch;
+        Pair<Integer, Integer> dinner;
+
+        private MealTimeTable(Pair<Integer, Integer> breakfast, Pair<Integer, Integer> lunch, Pair<Integer, Integer> dinner) {
+            this.breakfast = breakfast;
+            this.lunch = lunch;
+            this.dinner = dinner;
+        }
+    }
+
 }
