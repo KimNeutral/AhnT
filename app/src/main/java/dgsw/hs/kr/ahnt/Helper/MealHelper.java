@@ -16,6 +16,12 @@ public class MealHelper {
 
     public static final String MEAL_CODE_PREFIX = "M";
 
+    /**
+     * Calendar 객체를 이용해 Map에서 그 날짜의 SchoolMenu를 가져옵니다.
+     * @param calendar 원하는 날짜
+     * @param schoolMeals 급식 맵
+     * @return 그 날의 SchoolMenu
+     */
     public static SchoolMenu getSchoolMenuByCalendar(Calendar calendar, Map<String, List<SchoolMenu>> schoolMeals) {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
