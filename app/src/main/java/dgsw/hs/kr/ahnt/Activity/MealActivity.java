@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import java.util.Calendar;
 import java.util.List;
 
+import butterknife.BindView;
 import dgsw.hs.kr.ahnt.Adapter.MealPagerAdapter;
 import dgsw.hs.kr.ahnt.Helper.CalendarHelper;
 import dgsw.hs.kr.ahnt.Helper.MealHelper;
@@ -23,10 +24,9 @@ import dgsw.hs.kr.ahnt.school.SchoolMonthlyMenu;
 
 public class MealActivity extends AppCompatActivity implements IProgressBarControl, IPassValue<SchoolMonthlyMenu> {
 
-    ProgressBar progressBar;
-    ConstraintLayout clProgress;
-
-    ViewPager vp;
+    @BindView(R.id.progressbar) ProgressBar progressBar;
+    @BindView(R.id.clProgress) ConstraintLayout clProgress;
+    @BindView(R.id.viewPager) ViewPager vp;
     MealPagerAdapter adapter;
 
     @Override
@@ -34,10 +34,6 @@ public class MealActivity extends AppCompatActivity implements IProgressBarContr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal);
 
-        clProgress = (ConstraintLayout) findViewById(R.id.clProgress);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar);
-
-        vp = (ViewPager) findViewById(R.id.viewPager);
         adapter = new MealPagerAdapter(getSupportFragmentManager());
 
         vp.setOffscreenPageLimit(3);

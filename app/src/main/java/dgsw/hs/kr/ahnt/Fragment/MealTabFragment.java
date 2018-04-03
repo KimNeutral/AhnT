@@ -15,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import dgsw.hs.kr.ahnt.Activity.MealActivity;
 import dgsw.hs.kr.ahnt.Helper.CalendarHelper;
 import dgsw.hs.kr.ahnt.Helper.MealHelper;
@@ -32,12 +34,10 @@ public class MealTabFragment extends Fragment {
     Calendar cal;
     SchoolMenu menu;
 
-    TextView tvMeal;
-    TextView tvCal;
-
-    Button btnDownload;
-
-    BottomNavigationView navigationView;
+    @BindView(R.id.tvMeal) TextView tvMeal;
+    @BindView(R.id.tvCalendar) TextView tvCal;
+    @BindView(R.id.btnDownload) Button btnDownload;
+    @BindView(R.id.navigation) BottomNavigationView navigationView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -124,10 +124,8 @@ public class MealTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meal_tab, container, false);
-        tvMeal = (TextView) view.findViewById(R.id.tvMeal);
-        tvCal = (TextView) view.findViewById(R.id.tvCalendar);
-        btnDownload = (Button) view.findViewById(R.id.btnDownload);
-        navigationView = (BottomNavigationView) view.findViewById(R.id.navigation);
+        ButterKnife.bind(view);
+
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         btnDownload.setOnClickListener(e -> {
