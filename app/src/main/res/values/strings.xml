@@ -3,4 +3,15 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_login">로그인</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">이메일</string>
+    <string name="prompt_password">비밀번호</string>
+    <string name="action_sign_in">로그인 또는 회원가입</string>
+    <string name="action_sign_in_short">로그인</string>
+    <string name="error_invalid_email">이메일 형식이 올바르지 않습니다</string>
+    <string name="error_invalid_password">비밀번호가 너무 짧습니다</string>
+    <string name="error_incorrect_password">비밀번호가 옳지 않습니다</string>
+    <string name="error_field_required">이 칸을 채워주세요</string>
 </resources>
