@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import dgsw.hs.kr.ahnt.Adapter.MealPagerAdapter;
 import dgsw.hs.kr.ahnt.Helper.CalendarHelper;
 import dgsw.hs.kr.ahnt.Helper.MealHelper;
@@ -33,6 +34,7 @@ public class MealActivity extends AppCompatActivity implements IProgressBarContr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal);
+        ButterKnife.bind(this);
 
         adapter = new MealPagerAdapter(getSupportFragmentManager());
 

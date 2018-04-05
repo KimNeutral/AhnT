@@ -23,6 +23,8 @@ import android.widget.TextView;
 import com.androidnetworking.AndroidNetworking;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import dgsw.hs.kr.ahnt.Model.Member;
 import dgsw.hs.kr.ahnt.R;
 
 /**
@@ -41,6 +43,7 @@ public class LoginActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
 
         AndroidNetworking.initialize(this);
 

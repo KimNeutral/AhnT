@@ -124,7 +124,7 @@ public class MealTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meal_tab, container, false);
-        ButterKnife.bind(view);
+        ButterKnife.bind(this, view);
 
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
