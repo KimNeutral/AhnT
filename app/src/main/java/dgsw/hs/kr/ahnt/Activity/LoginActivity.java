@@ -26,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dgsw.hs.kr.ahnt.Model.Member;
 import dgsw.hs.kr.ahnt.R;
+import io.realm.Realm;
 
 /**
  * A login screen that offers login via email/password.
@@ -46,6 +47,7 @@ public class LoginActivity extends AppCompatActivity{
         ButterKnife.bind(this);
 
         AndroidNetworking.initialize(this);
+        Realm.init(this);
 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
