@@ -32,6 +32,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import dgsw.hs.kr.ahnt.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -50,19 +52,18 @@ public class RegisterActivity extends AppCompatActivity {
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+    @BindView(R.id.email) private AutoCompleteTextView mEmailView;
+    @BindView(R.id.password) private EditText mPasswordView;
+    @BindView(R.id.email_sign_in_button) private Button mEmailSignInButton;
+    @BindView(R.id.login_form) private View mProgressView;
+    @BindView(R.id.login_progress) private View mLoginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        ButterKnife.bind(this);
 
-        mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
                 attemptLogin();
@@ -71,11 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(view -> attemptLogin());
-
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
     }
 
     /**
