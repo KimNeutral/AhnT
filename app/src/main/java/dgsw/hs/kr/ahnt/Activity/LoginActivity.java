@@ -47,7 +47,6 @@ public class LoginActivity extends AppCompatActivity{
         ButterKnife.bind(this);
 
         AndroidNetworking.initialize(this);
-        Realm.init(this);
 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
