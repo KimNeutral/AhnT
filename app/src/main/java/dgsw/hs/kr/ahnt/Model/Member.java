@@ -1,12 +1,10 @@
 package dgsw.hs.kr.ahnt.Model;
 
-import io.realm.RealmObject;
-
 /**
  * Created by neutral on 02/04/2018.
  */
 
-public class Member extends RealmObject{
+public class Member{
     private String id;
     private String name;
     private int grade;
