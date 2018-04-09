@@ -24,9 +24,7 @@ import com.androidnetworking.AndroidNetworking;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dgsw.hs.kr.ahnt.Model.Member;
 import dgsw.hs.kr.ahnt.R;
-import io.realm.Realm;
 
 /**
  * A login screen that offers login via email/password.
