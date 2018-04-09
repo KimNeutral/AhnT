@@ -52,11 +52,11 @@ public class RegisterActivity extends AppCompatActivity {
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    @BindView(R.id.email) private AutoCompleteTextView mEmailView;
-    @BindView(R.id.password) private EditText mPasswordView;
-    @BindView(R.id.email_sign_in_button) private Button mEmailSignInButton;
-    @BindView(R.id.login_form) private View mProgressView;
-    @BindView(R.id.login_progress) private View mLoginFormView;
+    @BindView(R.id.email) AutoCompleteTextView mEmailView;
+    @BindView(R.id.password) EditText mPasswordView;
+    @BindView(R.id.email_sign_in_button) Button mEmailSignInButton;
+    @BindView(R.id.login_form) View mProgressView;
+    @BindView(R.id.login_progress) View mLoginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
