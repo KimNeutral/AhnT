@@ -24,6 +24,7 @@ import com.androidnetworking.AndroidNetworking;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import dgsw.hs.kr.ahnt.R;
 
 /**
@@ -56,14 +57,17 @@ public class LoginActivity extends AppCompatActivity{
                 return false;
             }
         });
+    }
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+    @OnClick(R.id.register_button)
+    public void registerButtonClicked() {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.email_sign_in_button)
+    public void signInButtonClicked() {
+        attemptLogin();
     }
 
     private void attemptLogin() {
