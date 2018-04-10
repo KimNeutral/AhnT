@@ -5,18 +5,32 @@ package dgsw.hs.kr.ahnt.Model;
  */
 
 public class User {
-    private String id;
-    private String name;
-    private int grade;
-    private int classNum;
-    private int classCode;
+    private ClassInfo my_class;
 
-    public String getId() {
-        return id;
+    private String email;
+
+    private String name;
+
+    private String gender;
+
+    private String auth;
+
+    private String mobile;
+
+    public ClassInfo getMy_class() {
+        return my_class;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setMy_class(ClassInfo my_class) {
+        this.my_class = my_class;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName() {
@@ -27,27 +41,72 @@ public class User {
         this.name = name;
     }
 
-    public int getGrade() {
-        return grade;
+    public String getGender() {
+        return gender;
     }
 
-    public void setGrade(int grade) {
-        this.grade = grade;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public int getClassNum() {
-        return classNum;
+    public String getAuth() {
+        return auth;
     }
 
-    public void setClassNum(int classNum) {
-        this.classNum = classNum;
+    public void setAuth(String auth) {
+        this.auth = auth;
     }
 
-    public int getClassCode() {
-        return classCode;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setClassCode(int classCode) {
-        this.classCode = classCode;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    @Override
+    public String toString() {
+        return "ClassPojo [my_class = " + my_class + ", email = " + email + ", name = " + name + ", gender = " + gender + ", auth = " + auth + ", mobile = " + mobile + "]";
+    }
+
+    public class ClassInfo{
+        private String classroom;
+
+        private String grade;
+
+        private String class_number;
+
+        public String getClassroom() {
+
+            return classroom;
+        }
+
+        public void setClass(String classroom) {
+
+            this.classroom = classroom;
+        }
+
+        public String getGrade() {
+            return grade;
+        }
+
+        public void setGrade(String grade) {
+            this.grade = grade;
+        }
+
+        public String getClass_number() {
+            return class_number;
+        }
+
+        public void setClass_number(String class_number) {
+            this.class_number = class_number;
+        }
+
+        @Override
+        public String toString() {
+            return "ClassPojo [class = " + classroom
+                    + ", grade = " + grade + ", class_number = " + class_number + "]";
+        }
     }
 }
