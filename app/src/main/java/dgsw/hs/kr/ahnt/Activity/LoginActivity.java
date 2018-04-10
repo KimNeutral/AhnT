@@ -6,33 +6,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
-import android.os.AsyncTask;
-
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dgsw.hs.kr.ahnt.Interface.IPassValue;
+import dgsw.hs.kr.ahnt.Network.NetworkManager;
+import dgsw.hs.kr.ahnt.Network.Response.LoginResponse;
 import dgsw.hs.kr.ahnt.R;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity{
-
-    private UserLoginTask mAuthTask = null;
+public class LoginActivity extends AppCompatActivity implements IPassValue<LoginResponse>{
 
     @BindView(R.id.email) AutoCompleteTextView mEmailView;
     @BindView(R.id.password) EditText mPasswordView;
@@ -71,10 +69,6 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -119,14 +113,14 @@ public class LoginActivity extends AppCompatActivity{
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+
+            NetworkManager.login(this, email, password);
         }
     }
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@dgsw.hs.kr");
+        return email.matches("\\w+@dgsw\\.hs\\.kr$");
     }
 
     private boolean isPasswordValid(String password) {
@@ -157,59 +151,27 @@ public class LoginActivity extends AppCompatActivity{
         });
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    @Override
+    public void passValue(LoginResponse value) {
+        showProgress(false);
 
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            if ("root".equals(mEmail)) {
-                // Account exists, return true if the password matches.
-                return "1234".equals(mPassword);
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
+        if (value != null) {
+            if (value.getStatus().equals("200")) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
+                if (value.getStatus().equals("500")) {
+                    Toast.makeText(this, R.string.error_login_server, Toast.LENGTH_SHORT).show();
 
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
+                } else if (value.getStatus().equals("401") || value.getStatus().equals("400")) {
+                    Toast.makeText(this, R.string.error_login, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, R.string.error_login_server, Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else {
+            Toast.makeText(this, R.string.error_login_server, Toast.LENGTH_SHORT).show();
         }
     }
 }
