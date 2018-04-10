@@ -71,20 +71,20 @@ public class User {
     }
 
     public class ClassInfo{
-        private String classroom;
+        private String classRoom;
 
         private String grade;
 
-        private String class_number;
+        private String classNumber;
 
         public String getClassroom() {
 
-            return classroom;
+            return classRoom;
         }
 
-        public void setClass(String classroom) {
+        public void setClass(String classRoom) {
 
-            this.classroom = classroom;
+            this.classRoom = classRoom;
         }
 
         public String getGrade() {
@@ -95,18 +95,18 @@ public class User {
             this.grade = grade;
         }
 
-        public String getClass_number() {
-            return class_number;
+        public String getClassNumber() {
+            return classNumber;
         }
 
-        public void setClass_number(String class_number) {
-            this.class_number = class_number;
+        public void setClassNumber(String classNumber) {
+            this.classNumber = classNumber;
         }
 
         @Override
         public String toString() {
-            return "ClassPojo [classroom = " + classroom
-                    + ", grade = " + grade + ", class_number = " + class_number + "]";
+            return "ClassPojo [classroom = " + classRoom
+                    + ", grade = " + grade + ", class_number = " + classNumber + "]";
         }
     }
 }
