@@ -5,7 +5,7 @@ package dgsw.hs.kr.ahnt.Model;
  */
 
 public class User {
-    private ClassInfo my_class;
+    private ClassInfo myClass;
 
     private String email;
 
@@ -17,12 +17,12 @@ public class User {
 
     private String mobile;
 
-    public ClassInfo getMy_class() {
-        return my_class;
+    public ClassInfo getMyClass() {
+        return myClass;
     }
 
-    public void setMy_class(ClassInfo my_class) {
-        this.my_class = my_class;
+    public void setMyClass(ClassInfo myClass) {
+        this.myClass = myClass;
     }
 
     public String getEmail() {
@@ -67,7 +67,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "ClassPojo [my_class = " + my_class + ", email = " + email + ", name = " + name + ", gender = " + gender + ", auth = " + auth + ", mobile = " + mobile + "]";
+        return "ClassPojo [myClass = " + myClass + ", email = " + email + ", name = " + name + ", gender = " + gender + ", auth = " + auth + ", mobile = " + mobile + "]";
     }
 
     public class ClassInfo{
@@ -105,7 +105,7 @@ public class User {
 
         @Override
         public String toString() {
-            return "ClassPojo [class = " + classroom
+            return "ClassPojo [classroom = " + classroom
                     + ", grade = " + grade + ", class_number = " + class_number + "]";
         }
     }
