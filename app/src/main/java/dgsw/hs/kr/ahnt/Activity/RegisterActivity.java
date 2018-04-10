@@ -54,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
     // UI references.
     @BindView(R.id.email) AutoCompleteTextView mEmailView;
     @BindView(R.id.password) EditText mPasswordView;
-    @BindView(R.id.email_sign_in_button) Button mEmailSignInButton;
+    @BindView(R.id.register_button) Button registerButton;
     @BindView(R.id.login_form) View mProgressView;
     @BindView(R.id.login_progress) View mLoginFormView;
 
@@ -72,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         });
 
-        mEmailSignInButton.setOnClickListener(view -> attemptLogin());
+        registerButton.setOnClickListener(view -> attemptLogin());
     }
 
     /**
