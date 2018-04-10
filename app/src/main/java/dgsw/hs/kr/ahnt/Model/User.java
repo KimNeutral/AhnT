@@ -4,7 +4,7 @@ package dgsw.hs.kr.ahnt.Model;
  * Created by neutral on 02/04/2018.
  */
 
-public class Member{
+public class User {
     private String id;
     private String name;
     private int grade;
