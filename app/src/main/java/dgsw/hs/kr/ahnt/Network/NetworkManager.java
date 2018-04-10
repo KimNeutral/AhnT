@@ -6,8 +6,6 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,7 +14,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import dgsw.hs.kr.ahnt.Interface.IPassValue;
-import dgsw.hs.kr.ahnt.Network.Response.LoginResponse;
+import dgsw.hs.kr.ahnt.Model.User;
+import dgsw.hs.kr.ahnt.Network.Response.*;
 
 /**
  * Created by neutral on 10/04/2018.
@@ -95,5 +94,37 @@ public class NetworkManager {
         output = sb.toString();
 
         return output;
+    }
+
+    public static void register(IPassValue<RegisterResponse> pass, User user) {
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
+        JSONObject jobj = null;
+        try {
+            jobj = new JSONObject(gson.toJson(user));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        AndroidNetworking.post(CreateURL(REGISTER_URL))
+                .addJSONObjectBody(jobj)
+                .setTag("register")
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Gson gson = new GsonBuilder()
+                                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                                .create();
+                        RegisterResponse resp = gson.fromJson(response.toString(), RegisterResponse.class);
+                        pass.passValue(resp);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        pass.passValue(null);
+                    }
+                });
     }
 }
