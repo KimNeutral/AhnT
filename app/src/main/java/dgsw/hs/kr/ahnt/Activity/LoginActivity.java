@@ -32,7 +32,7 @@ import dgsw.hs.kr.ahnt.R;
  */
 public class LoginActivity extends AppCompatActivity implements IPassValue<LoginResponse>{
 
-    @BindView(R.id.email) AutoCompleteTextView mEmailView;
+    @BindView(R.id.email) EditText mEmailView;
     @BindView(R.id.password) EditText mPasswordView;
     @BindView(R.id.login_progress) View mProgressView;
     @BindView(R.id.login_form) View mLoginFormView;

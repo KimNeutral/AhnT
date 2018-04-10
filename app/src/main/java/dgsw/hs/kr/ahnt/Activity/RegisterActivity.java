@@ -52,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    @BindView(R.id.email) AutoCompleteTextView mEmailView;
+    @BindView(R.id.email) EditText mEmailView;
     @BindView(R.id.password) EditText mPasswordView;
     @BindView(R.id.register_button) Button registerButton;
     @BindView(R.id.login_form) View mProgressView;
