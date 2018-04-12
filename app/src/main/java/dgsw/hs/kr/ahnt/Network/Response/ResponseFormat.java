@@ -1,15 +1,15 @@
 package dgsw.hs.kr.ahnt.Network.Response;
 
 /**
- * Created by neutral on 10/04/2018.
+ * Created by neutral on 12/04/2018.
  */
 
-public class LoginResponse {
+public class ResponseFormat<T> {
     private String message;
 
     private String status;
 
-    private LoginData data;
+    private T data;
 
     public String getMessage ()
     {
@@ -31,19 +31,11 @@ public class LoginResponse {
         this.status = status;
     }
 
-    public LoginData getData ()
-    {
+    public T getData() {
         return data;
     }
 
-    public void setData (LoginData data)
-    {
+    public void setData(T data) {
         this.data = data;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "ClassPojo [message = "+message+", status = "+status+", data = "+data+"]";
     }
 }
