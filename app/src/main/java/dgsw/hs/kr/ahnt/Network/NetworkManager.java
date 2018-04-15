@@ -123,7 +123,7 @@ public class NetworkManager {
                 });
     }
 
-    public static JSONObject parseToJson(Object object) throws JsonProcessingException, JSONException {
+    private static JSONObject parseToJson(Object object) throws JsonProcessingException, JSONException {
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(object);
         return new JSONObject(json);
