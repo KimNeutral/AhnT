@@ -6,10 +6,12 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -33,7 +35,7 @@ public class NetworkManager {
         return SERVER_URL + resource;
     }
 
-    public static void login(IPassValue<LoginResponse> pass, String email, String pw) {
+    public static void login(IPassValue<ResponseFormat<LoginData>> pass, String email, String pw) {
         JSONObject jobj = new JSONObject();
         try {
             jobj.put("email", email);
@@ -51,7 +53,8 @@ public class NetworkManager {
                         Gson gson = new GsonBuilder()
                                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                                 .create();
-                        LoginResponse resp = gson.fromJson(response.toString(), LoginResponse.class);
+                        Type collectionType = new TypeToken<ResponseFormat<LoginData>>(){}.getType();
+                        ResponseFormat<LoginData> resp = gson.fromJson(response.toString(), collectionType);
                         pass.passValue(resp);
                     }
 
@@ -96,7 +99,7 @@ public class NetworkManager {
         return output;
     }
 
-    public static void register(IPassValue<RegisterResponse> pass, User user) {
+    public static void register(IPassValue<ResponseFormat<Void>> pass, User user) {
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
@@ -117,7 +120,8 @@ public class NetworkManager {
                         Gson gson = new GsonBuilder()
                                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                                 .create();
-                        RegisterResponse resp = gson.fromJson(response.toString(), RegisterResponse.class);
+                        Type collectionType = new TypeToken<ResponseFormat<Void>>(){}.getType();
+                        ResponseFormat<Void> resp = gson.fromJson(response.toString(), collectionType);
                         pass.passValue(resp);
                     }
 

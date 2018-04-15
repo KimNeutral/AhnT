@@ -8,13 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -24,13 +21,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dgsw.hs.kr.ahnt.Interface.IPassValue;
 import dgsw.hs.kr.ahnt.Network.NetworkManager;
-import dgsw.hs.kr.ahnt.Network.Response.LoginResponse;
+import dgsw.hs.kr.ahnt.Network.Response.LoginData;
+import dgsw.hs.kr.ahnt.Network.Response.ResponseFormat;
 import dgsw.hs.kr.ahnt.R;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements IPassValue<LoginResponse>{
+public class LoginActivity extends AppCompatActivity implements IPassValue<ResponseFormat<LoginData>>{
 
     @BindView(R.id.email) EditText mEmailView;
     @BindView(R.id.password) EditText mPasswordView;
@@ -149,7 +147,7 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Login
     }
 
     @Override
-    public void passValue(LoginResponse value) {
+    public void passValue(ResponseFormat<LoginData> value) {
         showProgress(false);
 
         if (value != null) {
