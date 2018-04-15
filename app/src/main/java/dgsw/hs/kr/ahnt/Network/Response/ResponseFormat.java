@@ -1,9 +1,13 @@
 package dgsw.hs.kr.ahnt.Network.Response;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 /**
  * Created by neutral on 12/04/2018.
  */
 
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ResponseFormat<T> {
     private String message;
 
