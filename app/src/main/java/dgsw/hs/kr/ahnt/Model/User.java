@@ -1,9 +1,13 @@
 package dgsw.hs.kr.ahnt.Model;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 /**
  * Created by neutral on 02/04/2018.
  */
 
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class User {
     private ClassInfo myClass;
 
@@ -70,6 +74,7 @@ public class User {
         return "ClassPojo [myClass = " + myClass + ", email = " + email + ", name = " + name + ", gender = " + gender + ", auth = " + auth + ", mobile = " + mobile + "]";
     }
 
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public class ClassInfo{
         private String classRoom;
 
@@ -77,12 +82,12 @@ public class User {
 
         private String classNumber;
 
-        public String getClassroom() {
+        public String getClassRoom() {
 
             return classRoom;
         }
 
-        public void setClass(String classRoom) {
+        public void setClassRoom(String classRoom) {
 
             this.classRoom = classRoom;
         }
