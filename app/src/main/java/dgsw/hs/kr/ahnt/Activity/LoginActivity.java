@@ -112,6 +112,7 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
             showProgress(true);
 
             NetworkManager.login(this, email, password);
+//            NetworkManager.loginAsyncTask(this, email, password);
         }
     }
 
