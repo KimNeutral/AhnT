@@ -2,10 +2,9 @@ package dgsw.hs.kr.ahnt.Network;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.androidnetworking.interfaces.ParsedRequestListener;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
@@ -43,19 +42,16 @@ public class NetworkManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Type collectionType = new TypeToken<ResponseFormat<LoginData>>(){}.getType();
+
         AndroidNetworking.post(CreateURL(LOGIN_URL))
                 .addJSONObjectBody(jobj)
                 .setTag("login")
                 .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
+                .getAsObject(ResponseFormat.class, new ParsedRequestListener<ResponseFormat<LoginData>>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Gson gson = new GsonBuilder()
-                                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                                .create();
-                        Type collectionType = new TypeToken<ResponseFormat<LoginData>>(){}.getType();
-                        ResponseFormat<LoginData> resp = gson.fromJson(response.toString(), collectionType);
-                        pass.passValue(resp);
+                    public void onResponse(ResponseFormat<LoginData> response) {
+                        pass.passValue(response);
                     }
 
                     @Override
@@ -100,13 +96,13 @@ public class NetworkManager {
     }
 
     public static void register(IPassValue<ResponseFormat<Void>> pass, User user) {
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
+
         JSONObject jobj = null;
         try {
-            jobj = new JSONObject(gson.toJson(user));
+            jobj = parseToJson(user);
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
@@ -114,15 +110,10 @@ public class NetworkManager {
                 .addJSONObjectBody(jobj)
                 .setTag("register")
                 .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
+                .getAsObject(ResponseFormat.class, new ParsedRequestListener<ResponseFormat<Void>>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Gson gson = new GsonBuilder()
-                                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                                .create();
-                        Type collectionType = new TypeToken<ResponseFormat<Void>>(){}.getType();
-                        ResponseFormat<Void> resp = gson.fromJson(response.toString(), collectionType);
-                        pass.passValue(resp);
+                    public void onResponse(ResponseFormat<Void> response) {
+                        pass.passValue(response);
                     }
 
                     @Override
@@ -130,5 +121,11 @@ public class NetworkManager {
                         pass.passValue(null);
                     }
                 });
+    }
+
+    public static JSONObject parseToJson(Object object) throws JsonProcessingException, JSONException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(object);
+        return new JSONObject(json);
     }
 }
