@@ -10,7 +10,6 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -47,7 +46,7 @@ public class NetworkManager {
                 .addJSONObjectBody(jobj)
                 .setTag("login")
                 .build()
-                .getAsObject(ResponseFormat.class, new ParsedRequestListener<ResponseFormat<LoginData>>() {
+                .getAsParsed(new TypeToken<ResponseFormat<LoginData>>() {}, new ParsedRequestListener<ResponseFormat<LoginData>>() {
                     @Override
                     public void onResponse(ResponseFormat<LoginData> response) {
                         pass.passValue(response);
@@ -109,7 +108,7 @@ public class NetworkManager {
                 .addJSONObjectBody(jobj)
                 .setTag("register")
                 .build()
-                .getAsObject(ResponseFormat.class, new ParsedRequestListener<ResponseFormat<Void>>() {
+                .getAsParsed(new TypeToken<ResponseFormat<Void>>() {}, new ParsedRequestListener<ResponseFormat<Void>>() {
                     @Override
                     public void onResponse(ResponseFormat<Void> response) {
                         pass.passValue(response);
