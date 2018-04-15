@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.jacksonandroidnetworking.JacksonParserFactory;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +43,7 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
         ButterKnife.bind(this);
 
         AndroidNetworking.initialize(this);
+        AndroidNetworking.setParserFactory(new JacksonParserFactory());
 
         mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
