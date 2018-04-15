@@ -42,7 +42,6 @@ public class NetworkManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Type collectionType = new TypeToken<ResponseFormat<LoginData>>(){}.getType();
 
         AndroidNetworking.post(CreateURL(LOGIN_URL))
                 .addJSONObjectBody(jobj)
