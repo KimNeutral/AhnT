@@ -26,6 +26,7 @@ import java.security.NoSuchAlgorithmException;
 
 import dgsw.hs.kr.ahnt.Interface.IPassValue;
 import dgsw.hs.kr.ahnt.Model.User;
+import dgsw.hs.kr.ahnt.Network.Request.RegisterRequest;
 import dgsw.hs.kr.ahnt.Network.Response.*;
 
 /**
@@ -104,11 +105,11 @@ public class NetworkManager {
         return output;
     }
 
-    public static void register(IPassValue<ResponseFormat<Void>> pass, User user) {
+    public static void register(IPassValue<ResponseFormat<Void>> pass, RegisterRequest request) {
 
         JSONObject jobj = null;
         try {
-            jobj = parseToJson(user);
+            jobj = parseToJson(request);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (JsonProcessingException e) {
