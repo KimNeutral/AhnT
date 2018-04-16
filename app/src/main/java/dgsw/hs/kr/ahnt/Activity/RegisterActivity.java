@@ -27,6 +27,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -45,6 +47,12 @@ public class RegisterActivity extends AppCompatActivity {
     // UI references.
     @BindView(R.id.email) EditText mEmailView;
     @BindView(R.id.password) EditText mPasswordView;
+    @BindView(R.id.username) EditText mUsernameView;
+    @BindView(R.id.rgGender) RadioGroup rgGender;
+    @BindView(R.id.mobile) EditText mMobileView;
+    @BindView(R.id.spinnerGrade) Spinner spGrade;
+    @BindView(R.id.spinnerClassRoom) Spinner spClassRoom;
+    @BindView(R.id.spinnerClassNumber) Spinner spClassNumber;
     @BindView(R.id.register_button) Button registerButton;
     @BindView(R.id.login_form) View mProgressView;
     @BindView(R.id.login_progress) View mLoginFormView;
