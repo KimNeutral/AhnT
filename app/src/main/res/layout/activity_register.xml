@@ -86,15 +86,18 @@
             </android.support.design.widget.TextInputLayout>
 
             <RadioGroup
+                android:id="@+id/rgGender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_gender_man">
+                    android:id="@+id/rbtnMan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_gender_man">
                 </RadioButton>
                 <RadioButton
+                    android:id="@+id/rbtnWoman"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_gender_woman">
