@@ -78,9 +78,10 @@
                     android:id="@+id/username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="textPersonName"
                     android:hint="@string/prompt_username"
                     android:maxLines="1"
+                    android:nextFocusRight="@id/rgGender"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
@@ -112,9 +113,11 @@
                     android:id="@+id/mobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789"
                     android:hint="@string/prompt_mobile"
                     android:maxLines="1"
+                    android:nextFocusRight="@id/spinnerGrade"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
