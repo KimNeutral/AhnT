@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="status_success">200</integer>
+    <integer name="status_bad_request">400</integer>
+    <integer name="status_server_error">500</integer>
+
+
+    <!--login status code-->
+    <integer name="status_login_fail">401</integer>
+
+    <!--register status code-->
+    <integer name="status_register_fail_duplicate_email">200</integer>
+</resources>
