@@ -158,16 +158,16 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
                 finish();
             } else {
                 if (value.getStatus() == R.integer.status_server_error || value.getStatus() == R.integer.status_bad_request) {
-                    Toast.makeText(this, R.string.error_login_server, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_server, Toast.LENGTH_SHORT).show();
 
                 } else if (value.getStatus() == R.integer.status_login_fail) {
                     Toast.makeText(this, R.string.error_login, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, R.string.error_login_server, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_server, Toast.LENGTH_SHORT).show();
                 }
             }
         } else {
-            Toast.makeText(this, R.string.error_login_server, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_server, Toast.LENGTH_SHORT).show();
         }
     }
 }

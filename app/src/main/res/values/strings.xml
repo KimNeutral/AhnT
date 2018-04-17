@@ -15,7 +15,8 @@
     <string name="error_incorrect_password">비밀번호가 옳지 않습니다</string>
     <string name="error_field_required">이 칸을 채워주세요</string>
     <string name="error_login">이메일또는 비밀번호가 일치하지않습니다.</string>
-    <string name="error_login_server">서버와 통신 중 오류가 발생하였습니다. 잠시 후 다시 시도해주세요.</string>
+
+    <string name="error_server">서버와 통신 중 오류가 발생하였습니다. 잠시 후 다시 시도해주세요.</string>
 
     <string name="prompt_email">이메일</string>
     <string name="prompt_password">비밀번호</string>
