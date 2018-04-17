@@ -19,6 +19,8 @@ public class User {
 
     private String mobile;
 
+    private String auth;
+
     public ClassInfo getMyClass() {
         return myClass;
     }
@@ -57,6 +59,14 @@ public class User {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getAuth() {
+        return auth;
+    }
+
+    public void setAuth(String auth) {
+        this.auth = auth;
     }
 
     @Override
