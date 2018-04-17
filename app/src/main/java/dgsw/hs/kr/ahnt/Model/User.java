@@ -61,7 +61,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "ClassPojo [myClass = " + myClass + ", email = " + email + ", name = " + name + ", gender = " + gender + ", auth = " + auth + ", mobile = " + mobile + "]";
+        return "ClassPojo [myClass = " + myClass + ", email = " + email + ", name = " + name + ", gender = " + gender + ", mobile = " + mobile + "]";
     }
 
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
