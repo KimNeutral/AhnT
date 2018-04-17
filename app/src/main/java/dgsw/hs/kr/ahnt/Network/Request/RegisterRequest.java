@@ -1,7 +1,10 @@
 package dgsw.hs.kr.ahnt.Network.Request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+import dgsw.hs.kr.ahnt.Helper.EncryptionHelper;
 
 /**
  * Created by neutral on 16/04/2018.
@@ -12,6 +15,9 @@ public class RegisterRequest {
     private String email;
 
     private String pw;
+
+    @JsonIgnore
+    private String RawPw;
 
     private String name;
 
@@ -36,7 +42,12 @@ public class RegisterRequest {
     }
 
     public void setPw(String pw) {
-        this.pw = pw;
+        this.RawPw = pw;
+        this.pw = EncryptionHelper.encrypt(pw);
+    }
+
+    public String getRawPw() {
+        return RawPw;
     }
 
     public String getName() {
