@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 public class ResponseFormat<T> {
     private String message;
 
-    private String status;
+    private int status;
 
     private T data;
 
@@ -25,12 +25,12 @@ public class ResponseFormat<T> {
         this.message = message;
     }
 
-    public String getStatus ()
+    public int getStatus ()
     {
         return status;
     }
 
-    public void setStatus (String status)
+    public void setStatus (int status)
     {
         this.status = status;
     }

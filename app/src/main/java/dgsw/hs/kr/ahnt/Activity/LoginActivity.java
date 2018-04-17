@@ -152,15 +152,15 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
         showProgress(false);
 
         if (value != null) {
-            if (value.getStatus().equals("200")) {
+            if (value.getStatus() == 200) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             } else {
-                if (value.getStatus().equals("500")) {
+                if (value.getStatus() == 500) {
                     Toast.makeText(this, R.string.error_login_server, Toast.LENGTH_SHORT).show();
 
-                } else if (value.getStatus().equals("401") || value.getStatus().equals("400")) {
+                } else if (value.getStatus() == 401 || value.getStatus() == 400) {
                     Toast.makeText(this, R.string.error_login, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, R.string.error_login_server, Toast.LENGTH_SHORT).show();
