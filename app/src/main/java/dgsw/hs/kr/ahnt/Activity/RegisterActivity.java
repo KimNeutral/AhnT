@@ -33,6 +33,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,10 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dgsw.hs.kr.ahnt.Interface.IPassValue;
+import dgsw.hs.kr.ahnt.Network.NetworkManager;
 import dgsw.hs.kr.ahnt.Network.Request.RegisterRequest;
+import dgsw.hs.kr.ahnt.Network.Response.ResponseFormat;
 import dgsw.hs.kr.ahnt.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -48,7 +52,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements IPassValue<ResponseFormat<Void>> {
     // UI references.
     @BindView(R.id.email) EditText mEmailView;
     @BindView(R.id.password) EditText mPasswordView;
@@ -119,6 +123,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         if(id == -1) {
             rbtnWoman.setError(getString(R.string.error_field_required));
+            focusView = rbtnWoman;
+            cancel = true;
         } else {
             RadioButton rbtn = findViewById(id);
             form.setGender(rbtn.getHint().toString());
@@ -162,7 +168,7 @@ public class RegisterActivity extends AppCompatActivity {
             // perform the user login attempt.
             showProgress(true);
 
-            //TODO: Do communicate with server
+            NetworkManager.register(this, form);
         }
     }
 
@@ -195,6 +201,25 @@ public class RegisterActivity extends AppCompatActivity {
                 mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             }
         });
+    }
+
+    @Override
+    public void passValue(ResponseFormat<Void> value) {
+        if (value != null) {
+            if (value.getStatus() == R.integer.status_success) {
+                Toast.makeText(this, "회원가입에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                finish();
+            } else if (value.getStatus() == R.integer.status_server_error || value.getStatus() == R.integer.status_bad_request) {
+                Toast.makeText(this, R.string.error_server, Toast.LENGTH_SHORT).show();
+            } else if (value.getStatus() == R.integer.status_register_fail_duplicate_email) {
+                mEmailView.setError(getString(R.string.error_register_duplicate_email));
+                mEmailView.requestFocus();
+            } else {
+                Toast.makeText(this, R.string.error_server, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, R.string.error_server, Toast.LENGTH_SHORT).show();
+        }
     }
 }
 
