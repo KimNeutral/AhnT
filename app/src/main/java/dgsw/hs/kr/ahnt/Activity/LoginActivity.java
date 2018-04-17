@@ -117,13 +117,11 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.matches("\\w+@dgsw\\.hs\\.kr$");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.matches("^(?=[A-z])(?=.*\\d)(?=.*[!@#$%^&*()_+~`\\-=\\[\\]{},./?])[A-z0-9!@#$%^&*()_+~`\\-=\\[\\]{},./?]{8,}$");
     }
 
     /**
