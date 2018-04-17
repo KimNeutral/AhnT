@@ -46,6 +46,7 @@ public class RegisterRequest {
         this.pw = EncryptionHelper.encrypt(pw);
     }
 
+    @JsonIgnore
     public String getRawPw() {
         return RawPw;
     }
