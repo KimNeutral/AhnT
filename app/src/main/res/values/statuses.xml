@@ -9,5 +9,5 @@
     <integer name="status_login_fail">401</integer>
 
     <!--register status code-->
-    <integer name="status_register_fail_duplicate_email">200</integer>
+    <integer name="status_register_fail_duplicate_email">409</integer>
 </resources>
