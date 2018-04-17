@@ -25,6 +25,7 @@
     <string name="prompt_mobile">전화번호</string>
     <string name="prompt_gender_woman">여성</string>
     <string name="prompt_gender_man">남성</string>
+    <string name="error_register_duplicate_email">중복된 이메일이 존재합니다.</string>
 
     <string-array name="grade_arrays">
         <!--<item>1학년</item>-->
