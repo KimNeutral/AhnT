@@ -11,7 +11,7 @@
     <string name="action_register">회원가입</string>
 
     <string name="error_invalid_email">이메일 형식이 올바르지 않습니다</string>
-    <string name="error_invalid_password">비밀번호가 너무 짧습니다</string>
+    <string name="error_invalid_password">8자이상, 특수 문자 및 숫자 하나이상, 대소문자를 포함해 비밀번호를 입력해주세요.</string>
     <string name="error_incorrect_password">비밀번호가 옳지 않습니다</string>
     <string name="error_field_required">이 칸을 채워주세요</string>
     <string name="error_login">이메일또는 비밀번호가 일치하지않습니다.</string>
