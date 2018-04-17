@@ -26,8 +26,8 @@
     <string name="prompt_gender_man">남성</string>
 
     <string-array name="grade_arrays">
-        <item>1학년</item>
-        <item>2학년</item>
+        <!--<item>1학년</item>-->
+        <!--<item>2학년</item>-->
         <item>3학년</item>
     </string-array>
     <string-array name="classroom_arrays">
