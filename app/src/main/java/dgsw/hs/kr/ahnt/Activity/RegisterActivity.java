@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -205,13 +206,16 @@ public class RegisterActivity extends AppCompatActivity implements IPassValue<Re
 
     @Override
     public void passValue(ResponseFormat<Void> value) {
+        showProgress(false);
+        Resources r = getResources();
+
         if (value != null) {
-            if (value.getStatus() == R.integer.status_success) {
+            if (value.getStatus() == r.getInteger(R.integer.status_success)) {
                 Toast.makeText(this, "회원가입에 성공하였습니다.", Toast.LENGTH_SHORT).show();
                 finish();
-            } else if (value.getStatus() == R.integer.status_server_error || value.getStatus() == R.integer.status_bad_request) {
+            } else if (value.getStatus() == r.getInteger(R.integer.status_server_error) || value.getStatus() == r.getInteger(R.integer.status_bad_request)) {
                 Toast.makeText(this, R.string.error_server, Toast.LENGTH_SHORT).show();
-            } else if (value.getStatus() == R.integer.status_register_fail_duplicate_email) {
+            } else if (value.getStatus() == r.getInteger(R.integer.status_register_fail_duplicate_email)) {
                 mEmailView.setError(getString(R.string.error_register_duplicate_email));
                 mEmailView.requestFocus();
             } else {

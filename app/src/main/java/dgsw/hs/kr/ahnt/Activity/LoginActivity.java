@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -150,17 +151,17 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
     @Override
     public void passValue(ResponseFormat<LoginData> value) {
         showProgress(false);
+        Resources r = getResources();
 
         if (value != null) {
-            if (value.getStatus() == R.integer.status_success) {
+            if (value.getStatus() == r.getInteger(R.integer.status_success)) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             } else {
-                if (value.getStatus() == R.integer.status_server_error || value.getStatus() == R.integer.status_bad_request) {
+                if (value.getStatus() == r.getInteger(R.integer.status_server_error) || value.getStatus() == r.getInteger(R.integer.status_bad_request)) {
                     Toast.makeText(this, R.string.error_server, Toast.LENGTH_SHORT).show();
-
-                } else if (value.getStatus() == R.integer.status_login_fail) {
+                } else if (value.getStatus() == r.getInteger(R.integer.status_login_fail)) {
                     Toast.makeText(this, R.string.error_login, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, R.string.error_server, Toast.LENGTH_SHORT).show();
