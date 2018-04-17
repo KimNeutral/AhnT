@@ -17,8 +17,6 @@ public class RegisterRequest {
 
     private String gender;
 
-    private String auth;
-
     private String mobile;
 
     private String classIdx;
@@ -55,14 +53,6 @@ public class RegisterRequest {
 
     public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public String getAuth() {
-        return auth;
-    }
-
-    public void setAuth(String auth) {
-        this.auth = auth;
     }
 
     public String getMobile() {
