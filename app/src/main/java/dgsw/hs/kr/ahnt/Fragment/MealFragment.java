@@ -1,16 +1,17 @@
-package dgsw.hs.kr.ahnt.Activity;
+package dgsw.hs.kr.ahnt.Fragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import java.util.Calendar;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +24,7 @@ import dgsw.hs.kr.ahnt.Network.MealGetAsyncTask;
 import dgsw.hs.kr.ahnt.R;
 import dgsw.hs.kr.ahnt.school.SchoolMonthlyMenu;
 
-public class MealActivity extends AppCompatActivity implements IProgressBarControl, IPassValue<SchoolMonthlyMenu> {
+public class MealFragment extends Fragment implements IProgressBarControl, IPassValue<SchoolMonthlyMenu> {
 
     @BindView(R.id.progressbar) ProgressBar progressBar;
     @BindView(R.id.clProgress) ConstraintLayout clProgress;
@@ -31,16 +32,19 @@ public class MealActivity extends AppCompatActivity implements IProgressBarContr
     MealPagerAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meal);
-        ButterKnife.bind(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_meal, container, false);
 
-        adapter = new MealPagerAdapter(getSupportFragmentManager());
+        ButterKnife.bind(this, view);
+
+        adapter = new MealPagerAdapter(getFragmentManager());
 
         vp.setOffscreenPageLimit(3);
 
         new MealGetAsyncTask(this).execute(CalendarHelper.CreateCalendar());
+
+        return view;
     }
 
     @Override

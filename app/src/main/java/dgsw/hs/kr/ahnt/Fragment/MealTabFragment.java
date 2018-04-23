@@ -13,12 +13,9 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dgsw.hs.kr.ahnt.Activity.MealActivity;
-import dgsw.hs.kr.ahnt.Helper.CalendarHelper;
 import dgsw.hs.kr.ahnt.Helper.MealHelper;
 import dgsw.hs.kr.ahnt.Helper.TimeZoneHelper;
 import dgsw.hs.kr.ahnt.Network.MealGetAsyncTask;
@@ -129,17 +126,17 @@ public class MealTabFragment extends Fragment {
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         btnDownload.setOnClickListener(e -> {
-            if (!(getActivity() instanceof MealActivity)) {
+            if (!(getParentFragment() instanceof MealFragment)) {
                 return;
             }
-            MealActivity activity = (MealActivity)getActivity();
+            MealFragment activity = (MealFragment)getParentFragment();
             new MealGetAsyncTask(activity).execute(cal);
         });
 
         updateUI(cal, menu);
 
         tvCal.setOnClickListener((v) -> {
-            MealActivity.DatePicker timePicker = new MealActivity.DatePicker();
+            MealFragment.DatePicker timePicker = new MealFragment.DatePicker();
             Bundle bundle = new Bundle();
             bundle.putInt("year", cal.get(Calendar.YEAR));
             bundle.putInt("month", cal.get(Calendar.MONTH));
