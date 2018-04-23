@@ -9,17 +9,22 @@
     android:fitsSystemWindows="true">
 
     <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             android:theme="@style/ToolBarStyle"/>
-    </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></FrameLayout>
+    </LinearLayout>
 
     <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
     <android.support.design.widget.NavigationView
@@ -35,19 +40,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="dgsw.hs.kr.ahnt.Activity.MainActivity">
-
-        <Button
-            android:id="@+id/btnMeal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onBtnMealClicked"
-            android:text="급식 임시보기"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-        </Button>
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.DrawerLayout>
