@@ -1,6 +1,10 @@
 package dgsw.hs.kr.ahnt.Activity;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -12,9 +16,10 @@ import android.support.v7.widget.Toolbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dgsw.hs.kr.ahnt.Fragment.MealFragment;
 import dgsw.hs.kr.ahnt.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
 
@@ -41,9 +46,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onBtnMealClicked(View view) {
-        Intent intent = new Intent(this, MealActivity.class);
-        startActivity(intent);
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
     }
-
 }
