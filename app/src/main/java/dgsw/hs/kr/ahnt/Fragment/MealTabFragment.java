@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -16,6 +17,7 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dgsw.hs.kr.ahnt.Activity.MainActivity;
 import dgsw.hs.kr.ahnt.Helper.MealHelper;
 import dgsw.hs.kr.ahnt.Helper.TimeZoneHelper;
 import dgsw.hs.kr.ahnt.Network.MealGetAsyncTask;
@@ -126,11 +128,11 @@ public class MealTabFragment extends Fragment {
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         btnDownload.setOnClickListener(e -> {
-            if (!(getParentFragment() instanceof MealFragment)) {
-                return;
+            MainActivity activity = (MainActivity) getActivity();
+            if(activity != null){
+                MealFragment fragment = (MealFragment) activity.getSupportFragmentManager().findFragmentById(R.id.content_frame);
+                if(fragment != null) new MealGetAsyncTask(fragment).execute(cal);
             }
-            MealFragment activity = (MealFragment)getParentFragment();
-            new MealGetAsyncTask(activity).execute(cal);
         });
 
         updateUI(cal, menu);
