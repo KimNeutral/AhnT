@@ -35,12 +35,5 @@
         android:fitsSystemWindows="true"
         app:menu="@menu/drawer_view"
         app:headerLayout="@layout/nav_header"/>
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="dgsw.hs.kr.ahnt.Activity.MainActivity">
-
-    </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.DrawerLayout>
 
