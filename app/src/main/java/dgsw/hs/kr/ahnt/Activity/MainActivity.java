@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +23,7 @@ import dgsw.hs.kr.ahnt.R;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.nav_view) NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        mDrawerLayout.requestLayout();
+
+        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            // Update your UI here.
+
+        });
+
     }
 
     @Override
@@ -48,6 +60,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+        Fragment fragment = null;
+        String title = "";
+
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.nav_meal:
+                fragment = new MealFragment();
+                title = "급식";
+                break;
+            case R.id.nav_out:
+                break;
+            case R.id.nav_sleep:
+                break;
+        }
+
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.content_frame, fragment);
+            ft.add(R.id.content_frame, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(title);
+            }
+        }
+
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
