@@ -24,12 +24,14 @@ import dgsw.hs.kr.ahnt.Network.MealGetAsyncTask;
 import dgsw.hs.kr.ahnt.R;
 import dgsw.hs.kr.ahnt.school.SchoolMonthlyMenu;
 
-public class MealFragment extends Fragment implements IProgressBarControl, IPassValue<SchoolMonthlyMenu> {
+public class MealFragment extends BaseFragment implements IProgressBarControl, IPassValue<SchoolMonthlyMenu> {
 
     @BindView(R.id.progressbar) ProgressBar progressBar;
     @BindView(R.id.clProgress) ConstraintLayout clProgress;
     @BindView(R.id.viewPager) ViewPager vp;
     MealPagerAdapter adapter;
+
+    private static final String TITLE = "급식";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,6 +85,11 @@ public class MealFragment extends Fragment implements IProgressBarControl, IPass
 
         vp.setCurrentItem(bPos);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected String getTitle() {
+        return TITLE;
     }
 
     /**
