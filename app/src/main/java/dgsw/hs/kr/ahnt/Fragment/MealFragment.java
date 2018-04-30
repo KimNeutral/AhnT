@@ -88,7 +88,7 @@ public class MealFragment extends BaseFragment implements IProgressBarControl, I
     }
 
     @Override
-    protected String getTitle() {
+    public String getTitle() {
         return TITLE;
     }
 

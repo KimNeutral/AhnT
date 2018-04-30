@@ -13,5 +13,5 @@ public abstract class BaseFragment extends Fragment {
         getActivity().setTitle(getTitle());
     }
 
-    protected abstract String getTitle();
+    public abstract String getTitle();
 }
