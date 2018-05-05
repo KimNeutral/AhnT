@@ -7,9 +7,13 @@ import io.realm.RealmObject;
  */
 
 public class TokenInfo extends RealmObject {
-    public String token;
+    private String token;
 
-    public TokenInfo(String token) {
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
         this.token = token;
     }
 }
