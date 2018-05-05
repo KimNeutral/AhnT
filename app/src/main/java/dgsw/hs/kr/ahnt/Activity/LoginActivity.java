@@ -22,10 +22,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dgsw.hs.kr.ahnt.Interface.IPassValue;
+import dgsw.hs.kr.ahnt.Model.TokenInfo;
 import dgsw.hs.kr.ahnt.Network.NetworkManager;
 import dgsw.hs.kr.ahnt.Network.Response.LoginData;
 import dgsw.hs.kr.ahnt.Network.Response.ResponseFormat;
 import dgsw.hs.kr.ahnt.R;
+import io.realm.Realm;
 
 /**
  * A login screen that offers login via email/password.
@@ -42,6 +44,8 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        Realm.init(this);
 
         AndroidNetworking.initialize(this);
         AndroidNetworking.setParserFactory(new JacksonParserFactory());
@@ -155,6 +159,14 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
 
         if (value != null) {
             if (value.getStatus() == r.getInteger(R.integer.status_success)) {
+                Realm realm = Realm.getDefaultInstance();
+
+                realm.executeTransaction(re -> {
+                    TokenInfo tokenInfo = realm.createObject(TokenInfo.class);
+                    tokenInfo.setToken(value.getData().getToken());
+                });
+
+                // 화면전환
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
