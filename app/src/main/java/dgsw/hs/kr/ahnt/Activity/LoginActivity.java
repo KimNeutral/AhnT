@@ -9,8 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,16 +19,25 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.jacksonandroidnetworking.JacksonParserFactory;
 
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dgsw.hs.kr.ahnt.Helper.CalendarHelper;
 import dgsw.hs.kr.ahnt.Interface.IPassValue;
 import dgsw.hs.kr.ahnt.Model.TokenInfo;
 import dgsw.hs.kr.ahnt.Network.NetworkManager;
 import dgsw.hs.kr.ahnt.Network.Response.LoginData;
 import dgsw.hs.kr.ahnt.Network.Response.ResponseFormat;
 import dgsw.hs.kr.ahnt.R;
+import io.realm.DynamicRealm;
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmMigration;
+import io.realm.RealmObjectSchema;
+import io.realm.RealmResults;
+import io.realm.RealmSchema;
 
 /**
  * A login screen that offers login via email/password.
@@ -39,6 +49,8 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
     @BindView(R.id.login_progress) View mProgressView;
     @BindView(R.id.login_form) View mLoginFormView;
 
+    RealmConfiguration realmConfiguration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,16 +58,30 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
         ButterKnife.bind(this);
 
         Realm.init(this);
+        /*this.realmConfiguration = new RealmConfiguration.Builder().schemaVersion(1).migration(new RealmMigration() {
+            @Override
+            public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
+                Log.d(this.getClass().getSimpleName(), "Old version: [" + oldVersion + "], new version: [" + newVersion + "]");
+                RealmSchema realmSchema = realm.getSchema();
+                for(long version = oldVersion; version < newVersion; version++) {
+                    if(version == 0) { // to 1
+                        RealmObjectSchema stationSchema = realmSchema.get("TokenInfo");
+                        stationSchema.addField("createdAt", Date.class);
+                    }
+                }
+            }
+        }).build();
+        Realm.setDefaultConfiguration(this.realmConfiguration);*/
 
         AndroidNetworking.initialize(this);
         AndroidNetworking.setParserFactory(new JacksonParserFactory());
 
         mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
-            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                attemptLogin();
-                return true;
-            }
-            return false;
+            if (keyEvent.getAction() != KeyEvent.ACTION_DOWN)
+                return false;
+
+            attemptLogin();
+            return true;
         });
     }
 
@@ -161,10 +187,11 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
             if (value.getStatus() == r.getInteger(R.integer.status_success)) {
                 Realm realm = Realm.getDefaultInstance();
 
-                realm.executeTransaction(re -> {
-                    TokenInfo tokenInfo = realm.createObject(TokenInfo.class);
-                    tokenInfo.setToken(value.getData().getToken());
-                });
+                realm.beginTransaction();
+                TokenInfo tokenInfo = realm.createObject(TokenInfo.class);
+                tokenInfo.setToken(value.getData().getToken());
+                tokenInfo.setCreatedAt(new Date());
+                realm.commitTransaction();
 
                 // 화면전환
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
