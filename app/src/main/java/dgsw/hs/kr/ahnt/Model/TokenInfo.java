@@ -1,5 +1,7 @@
 package dgsw.hs.kr.ahnt.Model;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 
 /**
@@ -8,6 +10,15 @@ import io.realm.RealmObject;
 
 public class TokenInfo extends RealmObject {
     private String token;
+    private Date createdAt;
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public String getToken() {
         return token;
