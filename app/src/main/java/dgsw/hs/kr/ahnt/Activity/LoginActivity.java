@@ -142,7 +142,8 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
             // perform the user login attempt.
             showProgress(true);
 
-            NetworkManager.login(this, email, password);
+            // TODO : 서버에서 FCM 활성화 될 때 registeration_token 추가하기.
+            NetworkManager.login(this, email, password, "TEST");
 //            NetworkManager.loginAsyncTask(this, email, password);
         }
     }

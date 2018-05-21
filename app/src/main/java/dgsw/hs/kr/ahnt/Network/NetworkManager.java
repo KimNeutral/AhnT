@@ -46,11 +46,12 @@ public class NetworkManager {
         return SERVER_URL + resource;
     }
 
-    public static void login(IPassValue<ResponseFormat<LoginData>> pass, String email, String pw) {
+    public static void login(IPassValue<ResponseFormat<LoginData>> pass, String email, String pw, String registrationToken) {
         JSONObject jobj = new JSONObject();
         try {
             jobj.put("email", email);
             jobj.put("pw", EncryptionHelper.encrypt(pw));
+            jobj.put("registration_token", registrationToken);
         } catch (JSONException e) {
             e.printStackTrace();
         }
