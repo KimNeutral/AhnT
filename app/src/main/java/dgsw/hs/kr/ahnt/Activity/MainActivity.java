@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int ct = fm.getBackStackEntryCount();
 
         if (ct != 0) {
-            String tag = fm.getBackStackEntryAt(-1).getName();
+            String tag = fm.getBackStackEntryAt(ct - 1).getName();
             Fragment curFragment = fm.findFragmentByTag(tag);
 
             if (curFragment instanceof BaseFragment)
@@ -129,17 +129,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * @param fragment 추가할 Fragment
      */
     public void addFragment(BaseFragment fragment) {
+        if(fragment == null) return;
+
         BaseFragment cur = getCurrentFragment();
-        if (cur.getClass() == fragment.getClass()) {
+        if (cur != null && cur.getClass() == fragment.getClass()) {
             return;
         }
 
-        if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment, fragment.getTitle());
-            ft.addToBackStack(fragment.getTitle());
-            ft.commit();
-        }
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment, fragment.getTitle());
+        ft.addToBackStack(fragment.getTitle());
+        ft.commit();
     }
 
     @Override
