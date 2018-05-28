@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="dgsw.hs.kr.ahnt.Activity.LoginActivity">
+    tools:context="kr.hs.dgsw.flow.Activity.LoginActivity">
 
     <!-- Login progress -->
     <ProgressBar

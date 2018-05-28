@@ -4,7 +4,7 @@ apply plugin: 'realm-android'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "dgsw.hs.kr.ahnt"
+        applicationId "kr.hs.dgsw.flow"
         minSdkVersion 23
         targetSdkVersion 26
         versionCode 1

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dgsw.hs.kr.ahnt">
+    package="kr.hs.dgsw.flow">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
