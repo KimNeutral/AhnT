@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.jacksonandroidnetworking.JacksonParserFactory;
 
 import java.util.Date;
@@ -143,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
             showProgress(true);
 
             // TODO : 서버에서 FCM 활성화 될 때 registeration_token 추가하기.
-            NetworkManager.login(this, email, password, "TEST");
+            NetworkManager.login(this, email, password, FirebaseInstanceId.getInstance().getToken());
 //            NetworkManager.loginAsyncTask(this, email, password);
         }
     }
