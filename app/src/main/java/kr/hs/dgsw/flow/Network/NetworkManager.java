@@ -23,6 +23,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
+import java.util.Date;
 
 import kr.hs.dgsw.flow.Helper.EncryptionHelper;
 import kr.hs.dgsw.flow.Interface.IPassValue;
@@ -56,21 +58,7 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
-        AndroidNetworking.post(CreateURL(LOGIN_URL))
-                .addJSONObjectBody(jobj)
-                .setTag("login")
-                .build()
-                .getAsParsed(new TypeToken<ResponseFormat<LoginData>>() {}, new ParsedRequestListener<ResponseFormat<LoginData>>() {
-                    @Override
-                    public void onResponse(ResponseFormat<LoginData> response) {
-                        pass.passValue(response);
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-                        pass.passValue(null);
-                    }
-                });
+        doRequest(LOGIN_URL, pass, "login", jobj);
     }
 
     public static void register(IPassValue<ResponseFormat<Void>> pass, RegisterRequest request) {
@@ -84,13 +72,23 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
-        AndroidNetworking.post(CreateURL(REGISTER_URL))
+        doRequest(REGISTER_URL, pass, "register", jobj);
+    }
+
+    private static JSONObject parseToJson(Object object) throws JsonProcessingException, JSONException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(object);
+        return new JSONObject(json);
+    }
+
+    private static <T> void doRequest(String RESOURCE_URL, IPassValue<ResponseFormat<T>> pass, String tag, JSONObject jobj) {
+        AndroidNetworking.post(CreateURL(RESOURCE_URL))
                 .addJSONObjectBody(jobj)
-                .setTag("register")
+                .setTag(tag)
                 .build()
-                .getAsParsed(new TypeToken<ResponseFormat<Void>>() {}, new ParsedRequestListener<ResponseFormat<Void>>() {
+                .getAsParsed(new TypeToken<ResponseFormat<T>>() {}, new ParsedRequestListener<ResponseFormat<T>>() {
                     @Override
-                    public void onResponse(ResponseFormat<Void> response) {
+                    public void onResponse(ResponseFormat<T> response) {
                         pass.passValue(response);
                     }
 
@@ -99,12 +97,6 @@ public class NetworkManager {
                         pass.passValue(null);
                     }
                 });
-    }
-
-    private static JSONObject parseToJson(Object object) throws JsonProcessingException, JSONException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(object);
-        return new JSONObject(json);
     }
 
     public static void loginAsyncTask(IPassValue<ResponseFormat<LoginData>> pass, String email, String pw) {
