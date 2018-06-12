@@ -20,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import kr.hs.dgsw.flow.Fragment.BaseFragment;
 import kr.hs.dgsw.flow.Fragment.MealFragment;
+import kr.hs.dgsw.flow.Fragment.OutFragment;
 import kr.hs.dgsw.flow.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new MealFragment();
                 break;
             case R.id.nav_out:
+                fragment = new OutFragment();
                 break;
             case R.id.nav_sleep:
                 break;
