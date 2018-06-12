@@ -75,6 +75,19 @@ public class NetworkManager {
         doRequest(REGISTER_URL, pass, "register", jobj);
     }
 
+    public static void applyOutGo(IPassValue<ResponseFormat<OutData>> pass, Date start, Date end, String reason) {
+        JSONObject jobj = new JSONObject();
+        try {
+            jobj.put("start_time", start);
+            jobj.put("end_time", end);
+            jobj.put("reason", reason);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        doRequest(OUT_GO_URL, pass, "outgo", jobj);
+    }
+
     private static JSONObject parseToJson(Object object) throws JsonProcessingException, JSONException {
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(object);
