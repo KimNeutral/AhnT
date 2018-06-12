@@ -21,14 +21,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Calendar;
 import java.util.Date;
 
 import kr.hs.dgsw.flow.Helper.EncryptionHelper;
 import kr.hs.dgsw.flow.Interface.IPassValue;
-import kr.hs.dgsw.flow.Model.User;
 import kr.hs.dgsw.flow.Network.Request.RegisterRequest;
 import kr.hs.dgsw.flow.Network.Response.*;
 
@@ -58,7 +54,7 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
-        doRequest(LOGIN_URL, pass, "login", jobj);
+        doRequest(LOGIN_URL, Method.POST, pass, "login", jobj);
     }
 
     public static void register(IPassValue<ResponseFormat<Void>> pass, RegisterRequest request) {
@@ -72,7 +68,7 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
-        doRequest(REGISTER_URL, pass, "register", jobj);
+        doRequest(REGISTER_URL, Method.POST, pass, "register", jobj);
     }
 
     public static void applyOutGo(IPassValue<ResponseFormat<OutData>> pass, Date start, Date end, String reason) {
@@ -85,7 +81,7 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
-        doRequest(OUT_GO_URL, pass, "outgo", jobj);
+        doRequest(OUT_GO_URL, Method.POST, pass, "outgo", jobj);
     }
 
     private static JSONObject parseToJson(Object object) throws JsonProcessingException, JSONException {
@@ -94,8 +90,8 @@ public class NetworkManager {
         return new JSONObject(json);
     }
 
-    private static <T> void doRequest(String RESOURCE_URL, IPassValue<ResponseFormat<T>> pass, String tag, JSONObject jobj) {
-        AndroidNetworking.post(CreateURL(RESOURCE_URL))
+    private static <T> void doRequest(String RESOURCE_URL, Method method, IPassValue<ResponseFormat<T>> pass, String tag, JSONObject jobj) {
+        AndroidNetworking.request(CreateURL(RESOURCE_URL), method.getValue())
                 .addJSONObjectBody(jobj)
                 .setTag(tag)
                 .build()
@@ -198,6 +194,20 @@ public class NetworkManager {
         protected void onPostExecute(ResponseFormat<LoginData> loginDataResponseFormat) {
             super.onPostExecute(loginDataResponseFormat);
             pass.passValue(loginDataResponseFormat);
+        }
+    }
+
+    private enum Method {
+        GET(0),POST(1),PUT(2),DELETE(3),HEAD(4),PATCH(5),OPTIONS(6);
+
+        private int value;
+
+        Method(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
         }
     }
 }
