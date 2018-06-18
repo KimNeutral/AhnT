@@ -5,69 +5,17 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.util.Date;
 
+import kr.hs.dgsw.flow.Model.OutGo;
+
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class OutData {
-    int accept;
-    int idx;
-    Date startTime;
-    Date endTime;
-    String reason;
-    String classIdx;
-    String studentEmail;
+    private OutGo goOut;
 
-    public int getAccept() {
-        return accept;
+    public OutGo getGoOut() {
+        return goOut;
     }
 
-    public void setAccept(int accept) {
-        this.accept = accept;
-    }
-
-    public int getIdx() {
-        return idx;
-    }
-
-    public void setIdx(int idx) {
-        this.idx = idx;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    public String getClassIdx() {
-        return classIdx;
-    }
-
-    public void setClassIdx(String classIdx) {
-        this.classIdx = classIdx;
-    }
-
-    public String getStudentEmail() {
-        return studentEmail;
-    }
-
-    public void setStudentEmail(String studentEmail) {
-        this.studentEmail = studentEmail;
+    public void setGoOut(OutGo goOut) {
+        this.goOut = goOut;
     }
 }
