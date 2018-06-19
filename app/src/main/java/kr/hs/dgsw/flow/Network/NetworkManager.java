@@ -3,6 +3,7 @@ package kr.hs.dgsw.flow.Network;
 import android.os.AsyncTask;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -54,7 +55,19 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
-        doRequest(LOGIN_URL, Method.POST, pass, "login", jobj);
+//        doRequest(LOGIN_URL, Method.POST, pass, "login", jobj);
+        ANRequest req = createRequest(LOGIN_URL, Method.POST, "login", jobj);
+        req.getAsParsed(new TypeToken<ResponseFormat<LoginData>>() {}, new ParsedRequestListener<ResponseFormat<LoginData>>() {
+            @Override
+            public void onResponse(ResponseFormat<LoginData> response) {
+                pass.passValue(response);
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                pass.passValue(null);
+            }
+        });
     }
 
     public static void register(IPassValue<ResponseFormat<Void>> pass, RegisterRequest request) {
@@ -68,7 +81,19 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
-        doRequest(REGISTER_URL, Method.POST, pass, "register", jobj);
+//        doRequest(REGISTER_URL, Method.POST, pass, "register", jobj);
+        ANRequest req = createRequest(REGISTER_URL, Method.POST, "register", jobj);
+        req.getAsParsed(new TypeToken<ResponseFormat<Void>>() {}, new ParsedRequestListener<ResponseFormat<Void>>() {
+            @Override
+            public void onResponse(ResponseFormat<Void> response) {
+                pass.passValue(response);
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                pass.passValue(null);
+            }
+        });
     }
 
     public static void applyOutGo(IPassValue<ResponseFormat<OutData>> pass, Date start, Date end, String reason) {
@@ -81,7 +106,19 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
-        doRequest(OUT_GO_URL, Method.POST, pass, "outgo", jobj);
+//        doRequest(OUT_GO_URL, Method.POST, pass, "outgo", jobj);
+        ANRequest req = createRequest(OUT_GO_URL, Method.POST, "outgo", jobj);
+        req.getAsParsed(new TypeToken<ResponseFormat<OutData>>() {}, new ParsedRequestListener<ResponseFormat<OutData>>() {
+            @Override
+            public void onResponse(ResponseFormat<OutData> response) {
+                pass.passValue(response);
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                pass.passValue(null);
+            }
+        });
     }
 
     private static JSONObject parseToJson(Object object) throws JsonProcessingException, JSONException {
@@ -106,6 +143,13 @@ public class NetworkManager {
                         pass.passValue(null);
                     }
                 });
+    }
+
+    private static ANRequest createRequest(String RESOURCE_URL, Method method, String tag, JSONObject jobj) {
+        return AndroidNetworking.request(CreateURL(RESOURCE_URL), method.getValue())
+                .addJSONObjectBody(jobj)
+                .setTag(tag)
+                .build();
     }
 
     public static void loginAsyncTask(IPassValue<ResponseFormat<LoginData>> pass, String email, String pw) {
