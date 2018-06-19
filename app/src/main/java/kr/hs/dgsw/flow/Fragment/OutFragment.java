@@ -82,7 +82,7 @@ public class OutFragment extends BaseFragment {
         @Override
         public void onTimeSet(android.widget.TimePicker timePicker, int hour, int minute) {
             if(view == null) return;
-            view.setText(hour + ":" + minute);
+            view.setText(String.format("%02d", hour) + ":" + String.format("%02d", minute));
         }
     }
 }
