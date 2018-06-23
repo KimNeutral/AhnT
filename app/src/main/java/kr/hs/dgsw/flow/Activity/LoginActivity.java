@@ -50,8 +50,6 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
     @BindView(R.id.login_progress) View mProgressView;
     @BindView(R.id.login_form) View mLoginFormView;
 
-    RealmConfiguration realmConfiguration;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,20 +57,11 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
         ButterKnife.bind(this);
 
         Realm.init(this);
-        /*this.realmConfiguration = new RealmConfiguration.Builder().schemaVersion(1).migration(new RealmMigration() {
-            @Override
-            public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
-                Log.d(this.getClass().getSimpleName(), "Old version: [" + oldVersion + "], new version: [" + newVersion + "]");
-                RealmSchema realmSchema = realm.getSchema();
-                for(long version = oldVersion; version < newVersion; version++) {
-                    if(version == 0) { // to 1
-                        RealmObjectSchema stationSchema = realmSchema.get("TokenInfo");
-                        stationSchema.addField("createdAt", Date.class);
-                    }
-                }
-            }
-        }).build();
-        Realm.setDefaultConfiguration(this.realmConfiguration);*/
+//        RealmConfiguration config = new RealmConfiguration
+//                .Builder()
+//                .deleteRealmIfMigrationNeeded()
+//                .build();
+//        Realm.setDefaultConfiguration(config);
 
         AndroidNetworking.initialize(this);
         AndroidNetworking.setParserFactory(new JacksonParserFactory());
@@ -194,6 +183,8 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
                 tokenInfo.setToken(value.getData().getToken());
                 tokenInfo.setCreatedAt(new Date());
                 realm.commitTransaction();
+
+
 
                 // 화면전환
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
