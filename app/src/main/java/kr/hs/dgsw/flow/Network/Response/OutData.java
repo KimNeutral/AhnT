@@ -1,21 +1,18 @@
 package kr.hs.dgsw.flow.Network.Response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.util.Date;
 
-import kr.hs.dgsw.flow.Model.OutGo;
+import kr.hs.dgsw.flow.Model.GoOut;
 
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class OutData {
-    private OutGo goOut;
+    private GoOut goOut;
 
-    public OutGo getGoOut() {
-        return goOut;
-    }
-
-    public void setGoOut(OutGo goOut) {
-        this.goOut = goOut;
-    }
+    @JsonProperty("go_out")
+    public GoOut getGoOut() { return goOut; }
+    @JsonProperty("go_out")
+    public void setGoOut(GoOut value) { this.goOut = value; }
 }
