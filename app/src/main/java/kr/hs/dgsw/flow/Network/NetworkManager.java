@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import kr.hs.dgsw.flow.Helper.EncryptionHelper;
@@ -96,18 +97,19 @@ public class NetworkManager {
         });
     }
 
-    public static void applyOutGo(IPassValue<ResponseFormat<OutData>> pass, Date start, Date end, String reason) {
+    public static void applyOutGo(IPassValue<ResponseFormat<OutData>> pass, String token, Date start, Date end, String reason) {
         JSONObject jobj = new JSONObject();
         try {
-            jobj.put("start_time", start);
-            jobj.put("end_time", end);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            jobj.put("start_time", formatter.format(start));
+            jobj.put("end_time", formatter.format(end));
             jobj.put("reason", reason);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
 //        doRequest(OUT_GO_URL, Method.POST, pass, "outgo", jobj);
-        ANRequest req = createRequest(OUT_GO_URL, Method.POST, "outgo", jobj);
+        ANRequest req = createRequest(OUT_GO_URL, Method.POST, "outgo", jobj, token);
         req.getAsParsed(new TypeToken<ResponseFormat<OutData>>() {}, new ParsedRequestListener<ResponseFormat<OutData>>() {
             @Override
             public void onResponse(ResponseFormat<OutData> response) {
@@ -143,6 +145,14 @@ public class NetworkManager {
                         pass.passValue(null);
                     }
                 });
+    }
+
+    private static ANRequest createRequest(String RESOURCE_URL, Method method, String tag, JSONObject jobj, String token) {
+        return AndroidNetworking.request(CreateURL(RESOURCE_URL), method.getValue())
+                .addHeaders("x-access-token", token)
+                .addJSONObjectBody(jobj)
+                .setTag(tag)
+                .build();
     }
 
     private static ANRequest createRequest(String RESOURCE_URL, Method method, String tag, JSONObject jobj) {
