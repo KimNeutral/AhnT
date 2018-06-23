@@ -3,6 +3,7 @@ package kr.hs.dgsw.flow.Fragment;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -121,7 +122,8 @@ public class OutFragment extends BaseFragment implements IPassValue<ResponseForm
 
     @Override
     public void passValue(ResponseFormat<OutData> value) {
-        if(value.getStatus() == R.integer.status_success) {
+        Resources r = getResources();
+        if(value.getStatus() == r.getInteger(R.integer.status_success)) {
             Realm realm = Realm.getDefaultInstance();
             realm.beginTransaction();
             realm.copyToRealm(value.getData().getGoOut());
