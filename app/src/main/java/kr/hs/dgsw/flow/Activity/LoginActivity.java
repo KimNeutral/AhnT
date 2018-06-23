@@ -25,7 +25,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import kr.hs.dgsw.flow.Helper.CalendarHelper;
+import kr.hs.dgsw.flow.Helper.SharedPreferencesHelper;
 import kr.hs.dgsw.flow.Interface.IPassValue;
 import kr.hs.dgsw.flow.Model.TokenInfo;
 import kr.hs.dgsw.flow.Network.NetworkManager;
@@ -66,13 +66,27 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
         AndroidNetworking.initialize(this);
         AndroidNetworking.setParserFactory(new JacksonParserFactory());
 
+        SharedPreferencesHelper.setContext(this);
+
         mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
             if (keyEvent.getAction() != KeyEvent.ACTION_DOWN)
                 return false;
 
-            attemptLogin();
+            String email = mEmailView.getText().toString();
+            String password = mPasswordView.getText().toString();
+            attemptLogin(email, password);
             return true;
         });
+
+        if(!TextUtils.isEmpty(SharedPreferencesHelper.getPreference("email"))) {
+            String email = SharedPreferencesHelper.getPreference("email");
+            String password = SharedPreferencesHelper.getPreference("pw");
+
+            mEmailView.setText(email);
+            mPasswordView.setText(password);
+
+            doLogin(email, password);
+        }
     }
 
     @OnClick(R.id.register_button)
@@ -83,17 +97,15 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
 
     @OnClick(R.id.email_sign_in_button)
     public void signInButtonClicked() {
-        attemptLogin();
+        String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
+        attemptLogin(email, password);
     }
 
-    private void attemptLogin() {
+    private void attemptLogin(String email, String password) {
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -128,14 +140,18 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
 
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-
-            // TODO : 서버에서 FCM 활성화 될 때 registeration_token 추가하기.
-            NetworkManager.login(this, email, password, FirebaseInstanceId.getInstance().getToken());
-//            NetworkManager.loginAsyncTask(this, email, password);
+            doLogin(email, password);
         }
+    }
+
+    private void doLogin(String email, String password) {
+
+        // Show a progress spinner, and kick off a background task to
+        // perform the user login attempt.
+        showProgress(true);
+
+        NetworkManager.login(this, email, password, FirebaseInstanceId.getInstance().getToken());
+//            NetworkManager.loginAsyncTask(this, email, password);
     }
 
     private boolean isEmailValid(String email) {
@@ -184,7 +200,9 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
                 tokenInfo.setCreatedAt(new Date());
                 realm.commitTransaction();
 
-
+                SharedPreferencesHelper.setPreference("email",  mEmailView.getText().toString());
+                SharedPreferencesHelper.setPreference("pw", mPasswordView.getText().toString());
+                SharedPreferencesHelper.setPreference("token", value.getData().getToken());
 
                 // 화면전환
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
