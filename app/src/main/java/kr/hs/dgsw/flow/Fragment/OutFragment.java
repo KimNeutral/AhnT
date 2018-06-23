@@ -95,7 +95,7 @@ public class OutFragment extends BaseFragment implements IPassValue<ResponseForm
         }
 
         if(!isError) {
-            Calendar today = CalendarHelper.CreateCalendar(Integer.parseInt(dateSplit[0]),Integer.parseInt(dateSplit[1]),Integer.parseInt(dateSplit[2]));
+            Calendar today = CalendarHelper.CreateCalendar(Integer.parseInt(dateSplit[0]),Integer.parseInt(dateSplit[1]) - 1,Integer.parseInt(dateSplit[2]));
 
             Calendar start = CalendarHelper.CreateCalendar(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH),
                     Integer.parseInt(startSplit[0]), Integer.parseInt(startSplit[1]), 0);
