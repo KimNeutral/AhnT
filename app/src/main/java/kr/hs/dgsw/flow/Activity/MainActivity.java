@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import kr.hs.dgsw.flow.Fragment.BaseFragment;
 import kr.hs.dgsw.flow.Fragment.MealFragment;
+import kr.hs.dgsw.flow.Fragment.NoticeFragment;
 import kr.hs.dgsw.flow.Fragment.OutFragment;
 import kr.hs.dgsw.flow.R;
 
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case "SleepOut":
                     break;
                 case "Notice":
+                    addFragment(NoticeFragment.newInstance());
                     break;
             }
         }
@@ -111,6 +113,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new OutFragment();
                 break;
             case R.id.nav_sleep:
+                break;
+            case R.id.nav_notice:
+                fragment = new NoticeFragment();
                 break;
         }
 
