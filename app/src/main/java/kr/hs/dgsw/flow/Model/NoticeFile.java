@@ -13,18 +13,18 @@ public class NoticeFile {
     @JsonProperty("idx")
     public void setIdx(long value) { this.idx = value; }
 
-    @JsonProperty("uploadName")
+    @JsonProperty("upload_name")
     public String getUploadName() { return uploadName; }
-    @JsonProperty("uploadName")
+    @JsonProperty("upload_name")
     public void setUploadName(String value) { this.uploadName = value; }
 
-    @JsonProperty("uploadDir")
+    @JsonProperty("upload_dir")
     public String getUploadDir() { return uploadDir; }
-    @JsonProperty("uploadDir")
+    @JsonProperty("upload_dir")
     public void setUploadDir(String value) { this.uploadDir = value; }
 
-    @JsonProperty("noticeIdx")
+    @JsonProperty("notice_idx")
     public long getNoticeIdx() { return noticeIdx; }
-    @JsonProperty("noticeIdx")
+    @JsonProperty("notice_idx")
     public void setNoticeIdx(long value) { this.noticeIdx = value; }
 }

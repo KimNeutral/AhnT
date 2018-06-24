@@ -25,18 +25,18 @@ public class Notice {
     @JsonProperty("writer")
     public void setWriter(String value) { this.writer = value; }
 
-    @JsonProperty("writeDate")
+    @JsonProperty("write_date")
     public String getWriteDate() { return writeDate; }
-    @JsonProperty("writeDate")
+    @JsonProperty("write_date")
     public void setWriteDate(String value) { this.writeDate = value; }
 
-    @JsonProperty("modifyDate")
+    @JsonProperty("modify_date")
     public String getModifyDate() { return modifyDate; }
-    @JsonProperty("modifyDate")
+    @JsonProperty("modify_date")
     public void setModifyDate(String value) { this.modifyDate = value; }
 
-    @JsonProperty("NoticeFiles")
+    @JsonProperty("notice_files")
     public NoticeFile[] getNoticeFiles() { return noticeFiles; }
-    @JsonProperty("NoticeFiles")
+    @JsonProperty("notice_files")
     public void setNoticeFiles(NoticeFile[] value) { this.noticeFiles = value; }
 }
