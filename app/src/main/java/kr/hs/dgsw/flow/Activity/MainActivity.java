@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
@@ -37,6 +38,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         InitActionBarAndDrawer();
+
+        String fragmentRequire = getIntent().getStringExtra("fragment");
+        if (!TextUtils.isEmpty(fragmentRequire)) {
+            switch(fragmentRequire) {
+                case "GoOut":
+                    addFragment(OutFragment.newInstance());
+                    break;
+                case "SleepOut":
+                    break;
+                case "Notice":
+                    break;
+            }
+        }
     }
 
     private void InitActionBarAndDrawer() {

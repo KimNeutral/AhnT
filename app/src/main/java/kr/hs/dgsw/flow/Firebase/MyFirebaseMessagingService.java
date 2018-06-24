@@ -14,6 +14,8 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Map;
+
 import kr.hs.dgsw.flow.Activity.MainActivity;
 import kr.hs.dgsw.flow.R;
 
@@ -32,7 +34,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            sendNotification(remoteMessage.getNotification());
+            sendNotification(remoteMessage);
         }
     }
 
@@ -40,12 +42,33 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * Create and show a simple notification containing the received FCM message.
      *
      */
-    private void sendNotification(RemoteMessage.Notification noti) {
+    private void sendNotification(RemoteMessage remoteMessage) {
+        Map<String, String> data = remoteMessage.getData();
+        String type = data.get("type");
+        int requestID = (int) System.currentTimeMillis();
         Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
 
+        switch(type) {
+            case "go_out":
+                intent.putExtra("fragment", "GoOut");
+                break;
+            case "sleep_out":
+                intent.putExtra("fragment", "SleepOut");
+                break;
+            case "notice":
+                intent.putExtra("fragment", "Notice");
+                break;
+            default:
+        }
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, requestID /* Request code */, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+        RemoteMessage.Notification noti = remoteMessage.getNotification();
 //        String channelId = getString(R.string.default_notification_channel_id);
         String channelId = "default_channel_id";
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -64,7 +87,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel human readable title",
+                    "AhnT Message",
                     NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
