@@ -44,6 +44,7 @@ public class NetworkManager {
     public static final String REGISTER_URL = "auth/signup";
     public static final String OUT_GO_URL = "out/go";
     public static final String OUT_SLEEP_URL = "out/sleep";
+    public static final String NOTICE_URL = "notice/";
 
     private static String CreateURL(String resource) {
         return SERVER_URL + resource;
@@ -128,26 +129,23 @@ public class NetworkManager {
         req.getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
-                ResponseFormat<OutData> data = new ResponseFormat<>();
+                ResponseFormat<OutData> data =  parseToValue(response.toString(), new TypeReference<ResponseFormat<OutData>>() { });
+                pass.passValue(data);
+            }
 
-                ObjectMapper mapper = new ObjectMapper();
-                ObjectReader reader = mapper.reader(GoOut.class);
+            @Override
+            public void onError(ANError anError) {
+                pass.passValue(null);
+            }
+        });
+    }
 
-                try {
-                    GoOut goout = reader.readValue(response.getJSONObject("data").getJSONObject("go_out").toString());
-                    OutData outdata = new OutData();
-                    outdata.setGoOut(goout);
-                    data.setData(outdata);
-                    data.setStatus(response.getInt("status"));
-                    data.setMessage(response.getString("message"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+    public static void getAllNotice(IPassValue<ResponseFormat<AllNoticeData>> pass, String token) {
+        ANRequest request = createRequest(NOTICE_URL, Method.GET, "allnotice", null,token);
+        request.getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                ResponseFormat<AllNoticeData> data =  parseToValue(response.toString(), new TypeReference<ResponseFormat<AllNoticeData>>() { });
                 pass.passValue(data);
             }
 
@@ -162,6 +160,21 @@ public class NetworkManager {
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(object);
         return new JSONObject(json);
+    }
+
+    private static ResponseFormat parseToValue(String json, TypeReference type) {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectReader reader = mapper.reader(type);
+
+        try {
+            ResponseFormat data = reader.readValue(json);
+            return data;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static <T> void doRequest(String RESOURCE_URL, Method method, IPassValue<ResponseFormat<T>> pass, String tag, JSONObject jobj) {
