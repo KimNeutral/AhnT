@@ -12,8 +12,9 @@ import kr.hs.dgsw.flow.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NoticeFragment extends Fragment {
+public class NoticeFragment extends BaseFragment {
 
+    private static final String TITLE = "공지";
 
     public NoticeFragment() {
         // Required empty public constructor
@@ -27,4 +28,8 @@ public class NoticeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_notice, container, false);
     }
 
+    @Override
+    public String getTitle() {
+        return TITLE;
+    }
 }
