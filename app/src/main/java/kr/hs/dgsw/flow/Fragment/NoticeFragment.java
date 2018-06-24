@@ -32,4 +32,9 @@ public class NoticeFragment extends BaseFragment {
     public String getTitle() {
         return TITLE;
     }
+
+    public static NoticeFragment newInstance() {
+        NoticeFragment fragment = new NoticeFragment();
+        return fragment;
+    }
 }
