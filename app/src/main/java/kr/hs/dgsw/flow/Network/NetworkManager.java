@@ -5,10 +5,12 @@ import android.os.AsyncTask;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
@@ -27,6 +29,7 @@ import java.util.Date;
 
 import kr.hs.dgsw.flow.Helper.EncryptionHelper;
 import kr.hs.dgsw.flow.Interface.IPassValue;
+import kr.hs.dgsw.flow.Model.GoOut;
 import kr.hs.dgsw.flow.Network.Request.RegisterRequest;
 import kr.hs.dgsw.flow.Network.Response.*;
 
@@ -110,10 +113,42 @@ public class NetworkManager {
 
 //        doRequest(OUT_GO_URL, Method.POST, pass, "outgo", jobj);
         ANRequest req = createRequest(OUT_GO_URL, Method.POST, "outgo", jobj, token);
-        req.getAsParsed(new TypeToken<ResponseFormat<OutData>>() {}, new ParsedRequestListener<ResponseFormat<OutData>>() {
+//        req.getAsParsed(new TypeToken<ResponseFormat<OutData>>() {}, new ParsedRequestListener<ResponseFormat<OutData>>() {
+//            @Override
+//            public void onResponse(ResponseFormat<OutData> response) {
+//                pass.passValue(response);
+//            }
+//
+//            @Override
+//            public void onError(ANError anError) {
+//                pass.passValue(null);
+//            }
+//        });
+
+        req.getAsJSONObject(new JSONObjectRequestListener() {
             @Override
-            public void onResponse(ResponseFormat<OutData> response) {
-                pass.passValue(response);
+            public void onResponse(JSONObject response) {
+                ResponseFormat<OutData> data = new ResponseFormat<>();
+
+                ObjectMapper mapper = new ObjectMapper();
+                ObjectReader reader = mapper.reader(GoOut.class);
+
+                try {
+                    GoOut goout = reader.readValue(response.getJSONObject("data").getJSONObject("go_out").toString());
+                    OutData outdata = new OutData();
+                    outdata.setGoOut(goout);
+                    data.setData(outdata);
+                    data.setStatus(response.getInt("status"));
+                    data.setMessage(response.getString("message"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                pass.passValue(data);
             }
 
             @Override
