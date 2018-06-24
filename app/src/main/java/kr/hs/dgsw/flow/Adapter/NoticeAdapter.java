@@ -18,6 +18,10 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeViewHolder> {
         this.items = items;
     }
 
+    public void add(Notice item) {
+        items.add(item);
+    }
+
     @Override
     public NoticeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
