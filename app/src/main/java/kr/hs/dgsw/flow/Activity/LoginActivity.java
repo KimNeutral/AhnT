@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.downloader.PRDownloader;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.jacksonandroidnetworking.JacksonParserFactory;
 
@@ -65,6 +66,8 @@ public class LoginActivity extends AppCompatActivity implements IPassValue<Respo
 
         AndroidNetworking.initialize(this);
         AndroidNetworking.setParserFactory(new JacksonParserFactory());
+
+        PRDownloader.initialize(getApplicationContext());
 
         SharedPreferencesHelper.setContext(this);
 
