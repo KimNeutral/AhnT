@@ -35,7 +35,7 @@ public class OutFragment extends BaseFragment implements IPassValue<ResponseForm
     @BindView(R.id.endTime) EditText endTime;
     @BindView(R.id.reason) EditText reason;
 
-    private static final String TITLE = "외출";
+    private static final String TITLE = "외출 신청";
 
     public OutFragment() {}
 

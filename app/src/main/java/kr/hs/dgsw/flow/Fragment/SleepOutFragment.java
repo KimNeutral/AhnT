@@ -40,14 +40,12 @@ public class SleepOutFragment extends BaseFragment implements IPassValue<Respons
     @BindView(R.id.endTime) EditText endTime;
     @BindView(R.id.reason) EditText reason;
 
-    private static final String TITLE = "외박";
+    private static final String TITLE = "외박 신청";
 
     public SleepOutFragment() {}
 
-    public static OutFragment newInstance() {
-        OutFragment fragment = new OutFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
+    public static SleepOutFragment newInstance() {
+        SleepOutFragment fragment = new SleepOutFragment();
         return fragment;
     }
 
