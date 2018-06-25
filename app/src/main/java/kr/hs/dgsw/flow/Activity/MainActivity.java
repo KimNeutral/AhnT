@@ -24,7 +24,9 @@ import kr.hs.dgsw.flow.Fragment.MealFragment;
 import kr.hs.dgsw.flow.Fragment.NoticeDetailFragment;
 import kr.hs.dgsw.flow.Fragment.NoticeFragment;
 import kr.hs.dgsw.flow.Fragment.OutFragment;
+import kr.hs.dgsw.flow.Fragment.OutListFragment;
 import kr.hs.dgsw.flow.Fragment.SleepOutFragment;
+import kr.hs.dgsw.flow.Fragment.SleepOutListFragment;
 import kr.hs.dgsw.flow.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -85,7 +87,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportFragmentManager().addOnBackStackChangedListener(() -> syncDrawerToggleState());
+        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            syncDrawerToggleState();
+            setCurrentFragmentTitle();
+        });
     }
 
     private void syncDrawerToggleState() {
@@ -103,6 +108,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private void setCurrentFragmentTitle() {
+        if (getSupportFragmentManager().getBackStackEntryCount() <= 0) return;
+
+        BaseFragment cur = getCurrentFragment();
+        setTitle(cur.getTitle());
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         BaseFragment fragment = null;
@@ -114,10 +126,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new MealFragment();
                 break;
             case R.id.nav_out:
-                fragment = new OutFragment();
+                fragment = new OutListFragment();
                 break;
             case R.id.nav_sleep:
-                fragment = new SleepOutFragment();
+                fragment = new SleepOutListFragment();
                 break;
             case R.id.nav_notice:
                 fragment = new NoticeFragment();
