@@ -1,6 +1,7 @@
 package kr.hs.dgsw.flow.Fragment;
 
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import kr.hs.dgsw.flow.Activity.MainActivity;
 import kr.hs.dgsw.flow.Adapter.NoticeAdapter;
 import kr.hs.dgsw.flow.Helper.SharedPreferencesHelper;
 import kr.hs.dgsw.flow.Interface.IPassValue;
@@ -47,7 +49,7 @@ public class NoticeFragment extends BaseFragment implements IPassValue<ResponseF
         View view = inflater.inflate(R.layout.fragment_notice, container, false);
         ButterKnife.bind(this, view);
 
-        noticeAdapter = new NoticeAdapter(new ArrayList<>());
+        noticeAdapter = new NoticeAdapter(this, new ArrayList<>());
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(noticeAdapter);
@@ -74,5 +76,10 @@ public class NoticeFragment extends BaseFragment implements IPassValue<ResponseF
             for(Notice notice : value.getData().getList()) noticeAdapter.add(notice);
             noticeAdapter.notifyDataSetChanged();
         }
+    }
+
+    public void onItemClicked(Notice notice) {
+        MainActivity activity = (MainActivity) getActivity();
+        activity.addFragment(NoticeDetailFragment.newInstance(notice));
     }
 }

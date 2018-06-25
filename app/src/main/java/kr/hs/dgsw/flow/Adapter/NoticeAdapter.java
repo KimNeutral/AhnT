@@ -7,14 +7,17 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import kr.hs.dgsw.flow.Fragment.NoticeFragment;
 import kr.hs.dgsw.flow.Model.Notice;
 import kr.hs.dgsw.flow.R;
 import kr.hs.dgsw.flow.ViewHolder.NoticeViewHolder;
 
 public class NoticeAdapter extends RecyclerView.Adapter<NoticeViewHolder> {
+    NoticeFragment fragment;
     private List<Notice> items;
 
-    public NoticeAdapter(List<Notice> items) {
+    public NoticeAdapter(NoticeFragment fragment, List<Notice> items) {
+        this.fragment = fragment;
         this.items = items;
     }
 
@@ -33,7 +36,11 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeViewHolder> {
     @Override
     public void onBindViewHolder(NoticeViewHolder holder, int position) {
         Notice notice = items.get(position);
-        holder.textView.setText(notice.getContent());
+        holder.tvTitle.setText(notice.getContent());
+        holder.tvWriter.setText(notice.getWriter());
+        holder.view.setOnClickListener(view -> {
+            fragment.onItemClicked(notice);
+        });
     }
 
     @Override
