@@ -4,12 +4,14 @@ package kr.hs.dgsw.flow.Fragment;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
@@ -19,6 +21,7 @@ import kr.hs.dgsw.flow.Activity.MainActivity;
 import kr.hs.dgsw.flow.Adapter.NoticeAdapter;
 import kr.hs.dgsw.flow.Helper.SharedPreferencesHelper;
 import kr.hs.dgsw.flow.Interface.IPassValue;
+import kr.hs.dgsw.flow.Interface.IProgressBarControl;
 import kr.hs.dgsw.flow.Model.Notice;
 import kr.hs.dgsw.flow.Network.NetworkManager;
 import kr.hs.dgsw.flow.Network.Response.AllNoticeData;
@@ -28,10 +31,11 @@ import kr.hs.dgsw.flow.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NoticeFragment extends BaseFragment implements IPassValue<ResponseFormat<AllNoticeData>> {
+public class NoticeFragment extends BaseFragment implements IProgressBarControl, IPassValue<ResponseFormat<AllNoticeData>> {
 
-    @BindView(R.id.recyclerView)
-    public RecyclerView recyclerView;
+    @BindView(R.id.recyclerView) public RecyclerView recyclerView;
+    @BindView(R.id.progressbar) public ProgressBar progressBar;
+    @BindView(R.id.clProgress) public ConstraintLayout clProgress;
 
     private NoticeAdapter noticeAdapter;
 
@@ -54,6 +58,7 @@ public class NoticeFragment extends BaseFragment implements IPassValue<ResponseF
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(noticeAdapter);
 
+        showProgressBar();
         NetworkManager.getAllNotice(this, SharedPreferencesHelper.getPreference("token"));
 
         return view;
@@ -76,10 +81,29 @@ public class NoticeFragment extends BaseFragment implements IPassValue<ResponseF
             for(Notice notice : value.getData().getList()) noticeAdapter.add(notice);
             noticeAdapter.notifyDataSetChanged();
         }
+
+        hideProgressBar();
     }
 
     public void onItemClicked(Notice notice) {
         MainActivity activity = (MainActivity) getActivity();
         activity.addFragment(NoticeDetailFragment.newInstance(notice));
+    }
+
+    @Override
+    public void showProgressBar() {
+        clProgress.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        clProgress.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setProgressBarValue(int value) {
+        progressBar.setProgress(value);
     }
 }
