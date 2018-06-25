@@ -5,19 +5,24 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.List;
 import java.util.Map;
 
 import io.realm.Realm;
 import kr.hs.dgsw.flow.Activity.MainActivity;
+import kr.hs.dgsw.flow.Helper.SharedPreferencesHelper;
 import kr.hs.dgsw.flow.Model.GoOut;
 import kr.hs.dgsw.flow.R;
 
@@ -97,6 +102,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        increaseCount();
+        showBadge();
     }
 
     private void allowGoOut(int index) {
@@ -109,5 +116,47 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void allowSleepOut(int index) {
 
+    }
+
+    private void showBadge() {
+        Intent badgeIntent = new Intent("android.intent.action.BADGE_COUNT_UPDATE");
+        badgeIntent.putExtra("badge_count", getCount());
+        badgeIntent.putExtra("badge_count_package_name", getPackageName());
+        badgeIntent.putExtra("badge_count_class_name", getLauncherClassName());
+        sendBroadcast(badgeIntent);
+    }
+
+    private int getCount() {
+        String str = SharedPreferencesHelper.getPreference("badge_count");
+        if(!TextUtils.isEmpty(str))
+            return Integer.parseInt(str);
+        else {
+            SharedPreferencesHelper.setPreference("badge_count", "0");
+            return 0;
+        }
+    }
+
+    private void increaseCount() {
+        int ct = getCount();
+        SharedPreferencesHelper.setPreference("badge_count", (ct - 1) + "");
+    }
+
+    private void decreaseCount() {
+        int ct = getCount();
+        SharedPreferencesHelper.setPreference("badge_count", (ct - 1) + "");
+    }
+
+    private String getLauncherClassName() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        PackageManager pm = getApplicationContext().getPackageManager();
+        List<ResolveInfo> resolveInfos = pm.queryIntentActivities(intent, 0);
+        for (ResolveInfo resolveInfo : resolveInfos) {
+            String pkgName = resolveInfo.activityInfo.applicationInfo.packageName;
+            if (pkgName.equalsIgnoreCase(getPackageName())) {
+                return resolveInfo.activityInfo.name;
+            }
+        }
+        return null;
     }
 }
