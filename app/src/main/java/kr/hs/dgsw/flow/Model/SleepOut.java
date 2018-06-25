@@ -2,13 +2,15 @@ package kr.hs.dgsw.flow.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 
 public class SleepOut extends RealmObject {
     private long accept;
     private long idx;
-    private String startTime;
-    private String endTime;
+    private Date startTime;
+    private Date endTime;
     private String reason;
     private long classIdx;
     private String studentEmail;
@@ -24,14 +26,14 @@ public class SleepOut extends RealmObject {
     public void setIdx(long value) { this.idx = value; }
 
     @JsonProperty("start_time")
-    public String getStartTime() { return startTime; }
+    public Date getStartTime() { return startTime; }
     @JsonProperty("start_time")
-    public void setStartTime(String value) { this.startTime = value; }
+    public void setStartTime(Date value) { this.startTime = value; }
 
     @JsonProperty("end_time")
-    public String getEndTime() { return endTime; }
+    public Date getEndTime() { return endTime; }
     @JsonProperty("end_time")
-    public void setEndTime(String value) { this.endTime = value; }
+    public void setEndTime(Date value) { this.endTime = value; }
 
     @JsonProperty("reason")
     public String getReason() { return reason; }
