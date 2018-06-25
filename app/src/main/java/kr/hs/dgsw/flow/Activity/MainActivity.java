@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import kr.hs.dgsw.flow.Fragment.BaseFragment;
 import kr.hs.dgsw.flow.Fragment.MealFragment;
+import kr.hs.dgsw.flow.Fragment.NoticeDetailFragment;
 import kr.hs.dgsw.flow.Fragment.NoticeFragment;
 import kr.hs.dgsw.flow.Fragment.OutFragment;
 import kr.hs.dgsw.flow.R;
@@ -49,7 +50,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case "SleepOut":
                     break;
                 case "Notice":
-                    addFragment(NoticeFragment.newInstance());
+                    String idx = getIntent().getStringExtra("notice_idx");
+                    addFragment(NoticeDetailFragment.newInstance(Integer.parseInt(idx)));
                     break;
             }
         }

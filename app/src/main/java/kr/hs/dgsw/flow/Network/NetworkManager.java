@@ -30,6 +30,7 @@ import java.util.Date;
 import kr.hs.dgsw.flow.Helper.EncryptionHelper;
 import kr.hs.dgsw.flow.Interface.IPassValue;
 import kr.hs.dgsw.flow.Model.GoOut;
+import kr.hs.dgsw.flow.Model.Notice;
 import kr.hs.dgsw.flow.Network.Request.RegisterRequest;
 import kr.hs.dgsw.flow.Network.Response.*;
 
@@ -146,6 +147,22 @@ public class NetworkManager {
             @Override
             public void onResponse(JSONObject response) {
                 ResponseFormat<AllNoticeData> data =  parseToValue(response.toString(), new TypeReference<ResponseFormat<AllNoticeData>>() { });
+                pass.passValue(data);
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                pass.passValue(null);
+            }
+        });
+    }
+
+    public static void getNotice(IPassValue<ResponseFormat<Notice>> pass, String token, int noticeIdx) {
+        ANRequest request = createRequest(NOTICE_URL + noticeIdx, Method.GET, "notice", null,token);
+        request.getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                ResponseFormat<Notice> data =  parseToValue(response.toString(), new TypeReference<ResponseFormat<Notice>>() { });
                 pass.passValue(data);
             }
 

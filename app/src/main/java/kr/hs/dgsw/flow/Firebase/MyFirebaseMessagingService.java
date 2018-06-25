@@ -16,7 +16,9 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
+import io.realm.Realm;
 import kr.hs.dgsw.flow.Activity.MainActivity;
+import kr.hs.dgsw.flow.Model.GoOut;
 import kr.hs.dgsw.flow.R;
 
 import static android.content.ContentValues.TAG;
@@ -51,12 +53,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         switch(type) {
             case "go_out":
                 intent.putExtra("fragment", "GoOut");
+                allowGoOut(Integer.parseInt(data.get("idx").toString()));
                 break;
             case "sleep_out":
                 intent.putExtra("fragment", "SleepOut");
                 break;
             case "notice":
                 intent.putExtra("fragment", "Notice");
+                intent.putExtra("notice_idx", data.get("idx").toString());
                 break;
             default:
         }
@@ -93,5 +97,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    private void allowGoOut(int index) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        GoOut goOut = realm.where(GoOut.class).equalTo("idx", index).findFirst();
+        goOut.setAccept(1);
+        realm.commitTransaction();
+    }
+
+    private void allowSleepOut(int index) {
+
     }
 }

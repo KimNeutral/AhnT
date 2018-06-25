@@ -1,6 +1,7 @@
 package kr.hs.dgsw.flow.Fragment;
 
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,13 +11,18 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import kr.hs.dgsw.flow.Helper.SharedPreferencesHelper;
+import kr.hs.dgsw.flow.Interface.IPassValue;
+import kr.hs.dgsw.flow.Model.GoOut;
 import kr.hs.dgsw.flow.Model.Notice;
+import kr.hs.dgsw.flow.Network.NetworkManager;
+import kr.hs.dgsw.flow.Network.Response.ResponseFormat;
 import kr.hs.dgsw.flow.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NoticeDetailFragment extends BaseFragment {
+public class NoticeDetailFragment extends BaseFragment implements IPassValue<ResponseFormat<Notice>> {
 
     @BindView(R.id.tvContent) public TextView tvContent;
     @BindView(R.id.tvWriter) public TextView tvWriter;
@@ -36,11 +42,19 @@ public class NoticeDetailFragment extends BaseFragment {
         return fragment;
     }
 
+    public static NoticeDetailFragment newInstance(int idx) {
+        NoticeDetailFragment fragment = new NoticeDetailFragment();
+        NetworkManager.getNotice(fragment, SharedPreferencesHelper.getPreference("token"), idx);
+        return fragment;
+    }
+
     private void setNotice(Notice notice) {
         this.notice = notice;
     }
 
     private void bindView() {
+        if(notice == null) return;
+
         tvContent.setText(notice.getContent());
         tvWriter.setText(notice.getWriter());
     }
@@ -59,5 +73,14 @@ public class NoticeDetailFragment extends BaseFragment {
     @Override
     public String getTitle() {
         return TITLE;
+    }
+
+    @Override
+    public void passValue(ResponseFormat<Notice> value) {
+        Resources r = getResources();
+        if(value.getStatus() == r.getInteger(R.integer.status_success)) {
+            setNotice(value.getData());
+            bindView();
+        }
     }
 }
