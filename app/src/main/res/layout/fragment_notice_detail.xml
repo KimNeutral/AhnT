@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.NoticeDetailFragment"
-    android:background="#fff">
+    android:background="#fff"
+    android:padding="10dp">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -17,5 +18,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tvWriter"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/clFile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tvContent"
+        android:background="#eee"
+        android:visibility="gone"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/tvFileTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="14dp"
+            android:paddingLeft="10dp"
+            android:maxLines="1"/>
+        <Button
+            android:id="@+id/btnFileDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="다운로드">
+
+        </Button>
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
