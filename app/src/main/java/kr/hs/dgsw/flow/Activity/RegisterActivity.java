@@ -57,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity implements IPassValue<Re
     // UI references.
     @BindView(R.id.email) EditText mEmailView;
     @BindView(R.id.password) EditText mPasswordView;
+    @BindView(R.id.passwordRepeat) EditText mPasswordRepeatView;
     @BindView(R.id.username) EditText mUsernameView;
     @BindView(R.id.rgGender) RadioGroup rgGender;
     @BindView(R.id.rbtnWoman) RadioButton rbtnWoman;
@@ -145,6 +146,16 @@ public class RegisterActivity extends AppCompatActivity implements IPassValue<Re
             cancel = true;
         } else if(TextUtils.isEmpty(form.getRawPw())) {
             mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+
+        if(TextUtils.isEmpty(mPasswordRepeatView.getText().toString())) {
+            mPasswordRepeatView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        } else if(!form.getRawPw().equals(mPasswordRepeatView.getText().toString())) {
+            mPasswordRepeatView.setError(getString(R.string.error_password_not_match));
             focusView = mPasswordView;
             cancel = true;
         }

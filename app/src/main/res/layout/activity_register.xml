@@ -65,6 +65,22 @@
                     android:hint="@string/prompt_password"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:nextFocusRight="@id/passwordRepeat"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/passwordRepeat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_password_repeat"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
                     android:nextFocusRight="@id/username"
                     android:singleLine="true" />
 
