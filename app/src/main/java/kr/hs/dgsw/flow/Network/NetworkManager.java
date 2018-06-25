@@ -141,6 +141,59 @@ public class NetworkManager {
         });
     }
 
+    public static void applyOutSleep(IPassValue<ResponseFormat<OutSleepData>> pass, String token, String start, String end, String reason) {
+        JSONObject jobj = new JSONObject();
+        try {
+            jobj.put("start_time", start);
+            jobj.put("end_time", end);
+            jobj.put("reason", reason);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ANRequest req = createRequest(OUT_SLEEP_URL, Method.POST, "outsleep", jobj, token);
+
+        req.getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                ResponseFormat<OutSleepData> data =  parseToValue(response.toString(), new TypeReference<ResponseFormat<OutSleepData>>() { });
+                pass.passValue(data);
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                pass.passValue(null);
+            }
+        });
+    }
+
+    public static void applyOutSleep(IPassValue<ResponseFormat<OutSleepData>> pass, String token, Date start, Date end, String reason) {
+        JSONObject jobj = new JSONObject();
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            jobj.put("start_time", formatter.format(start));
+            jobj.put("end_time", formatter.format(end));
+            jobj.put("reason", reason);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ANRequest req = createRequest(OUT_SLEEP_URL, Method.POST, "outsleep", jobj, token);
+
+        req.getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                ResponseFormat<OutSleepData> data =  parseToValue(response.toString(), new TypeReference<ResponseFormat<OutSleepData>>() { });
+                pass.passValue(data);
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                pass.passValue(null);
+            }
+        });
+    }
+
     public static void getAllNotice(IPassValue<ResponseFormat<AllNoticeData>> pass, String token) {
         ANRequest request = createRequest(NOTICE_URL, Method.GET, "allnotice", null,token);
         request.getAsJSONObject(new JSONObjectRequestListener() {
