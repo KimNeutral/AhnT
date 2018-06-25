@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, fragment, fragment.getTitle());
+        ft.add(R.id.content_frame, fragment, fragment.getTitle());
         ft.addToBackStack(fragment.getTitle());
         ft.commit();
     }
