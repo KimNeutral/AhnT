@@ -12,8 +12,9 @@ import kr.hs.dgsw.flow.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SleepOutFragment extends Fragment {
+public class SleepOutFragment extends BaseFragment {
 
+    private static final String TITLE = "외박";
 
     public SleepOutFragment() {
         // Required empty public constructor
@@ -27,4 +28,14 @@ public class SleepOutFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_sleep_out, container, false);
     }
 
+    @Override
+    public String getTitle() {
+        return TITLE;
+    }
+
+    public static SleepOutFragment newInstance() {
+        SleepOutFragment fragment = new SleepOutFragment();
+
+        return fragment;
+    }
 }

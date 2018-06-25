@@ -24,6 +24,7 @@ import kr.hs.dgsw.flow.Fragment.MealFragment;
 import kr.hs.dgsw.flow.Fragment.NoticeDetailFragment;
 import kr.hs.dgsw.flow.Fragment.NoticeFragment;
 import kr.hs.dgsw.flow.Fragment.OutFragment;
+import kr.hs.dgsw.flow.Fragment.SleepOutFragment;
 import kr.hs.dgsw.flow.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     addFragment(OutFragment.newInstance());
                     break;
                 case "SleepOut":
+                    addFragment(SleepOutFragment.newInstance());
                     break;
                 case "Notice":
                     String idx = getIntent().getStringExtra("notice_idx");
@@ -115,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new OutFragment();
                 break;
             case R.id.nav_sleep:
+                fragment = new SleepOutFragment();
                 break;
             case R.id.nav_notice:
                 fragment = new NoticeFragment();
