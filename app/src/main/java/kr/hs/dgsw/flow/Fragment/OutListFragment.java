@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 import kr.hs.dgsw.flow.Activity.MainActivity;
 import kr.hs.dgsw.flow.Adapter.NoticeAdapter;
 import kr.hs.dgsw.flow.Adapter.OutAdapter;
@@ -47,6 +48,18 @@ public class OutListFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Realm realm = Realm.getDefaultInstance();
+
+        realm.beginTransaction();
+        RealmResults<GoOut> result = realm.where(GoOut.class).findAll();
+        List<GoOut> list = Arrays.asList(result.toArray(new GoOut[0]));
+        outAdapter.setItems(list);
+        realm.commitTransaction();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -71,7 +84,7 @@ public class OutListFragment extends BaseFragment {
     @OnClick(R.id.fbtnAdd)
     public void addButtonClicked() {
         MainActivity mainActivity = (MainActivity) getActivity();
-        mainActivity.addFragment(OutFragment.newInstance());
+        mainActivity.addFragment(OutFragment.newInstance(outAdapter));
     }
 
     @Override

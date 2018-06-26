@@ -69,7 +69,7 @@ public class SleepOutListFragment extends BaseFragment {
     @OnClick(R.id.fbtnAdd)
     public void addButtonClicked() {
         MainActivity mainActivity = (MainActivity) getActivity();
-        mainActivity.addFragment(SleepOutFragment.newInstance());
+        mainActivity.addFragment(SleepOutFragment.newInstance(outSleepAdapter));
     }
 
     @Override

@@ -21,6 +21,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.Realm;
+import kr.hs.dgsw.flow.Activity.MainActivity;
+import kr.hs.dgsw.flow.Adapter.OutAdapter;
 import kr.hs.dgsw.flow.Helper.CalendarHelper;
 import kr.hs.dgsw.flow.Helper.SharedPreferencesHelper;
 import kr.hs.dgsw.flow.Interface.IPassValue;
@@ -35,14 +37,15 @@ public class OutFragment extends BaseFragment implements IPassValue<ResponseForm
     @BindView(R.id.endTime) EditText endTime;
     @BindView(R.id.reason) EditText reason;
 
+    private OutAdapter adapter;
+
     private static final String TITLE = "외출 신청";
 
     public OutFragment() {}
 
-    public static OutFragment newInstance() {
+    public static OutFragment newInstance(OutAdapter adapter) {
         OutFragment fragment = new OutFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
+        fragment.adapter = adapter;
         return fragment;
     }
 
@@ -123,13 +126,19 @@ public class OutFragment extends BaseFragment implements IPassValue<ResponseForm
     @Override
     public void passValue(ResponseFormat<OutData> value) {
         Resources r = getResources();
+        Toast.makeText(getContext(), value.getMessage(), Toast.LENGTH_SHORT).show();
+
         if(value.getStatus() == r.getInteger(R.integer.status_success)) {
             Realm realm = Realm.getDefaultInstance();
             realm.beginTransaction();
             realm.copyToRealm(value.getData().getGoOut());
             realm.commitTransaction();
+
+            adapter.add(value.getData().getGoOut());
+
+            MainActivity activity = (MainActivity) getActivity();
+            activity.getFragmentManager().popBackStack();
         }
-        Toast.makeText(getContext(), value.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     public static class DatePicker extends android.support.v4.app.DialogFragment implements DatePickerDialog.OnDateSetListener {

@@ -19,6 +19,8 @@ import android.support.v7.widget.Toolbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import kr.hs.dgsw.flow.Fragment.BaseFragment;
 import kr.hs.dgsw.flow.Fragment.MealFragment;
 import kr.hs.dgsw.flow.Fragment.NoticeDetailFragment;
@@ -27,6 +29,7 @@ import kr.hs.dgsw.flow.Fragment.OutFragment;
 import kr.hs.dgsw.flow.Fragment.OutListFragment;
 import kr.hs.dgsw.flow.Fragment.SleepOutFragment;
 import kr.hs.dgsw.flow.Fragment.SleepOutListFragment;
+import kr.hs.dgsw.flow.Helper.SharedPreferencesHelper;
 import kr.hs.dgsw.flow.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -48,10 +51,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (!TextUtils.isEmpty(fragmentRequire)) {
             switch(fragmentRequire) {
                 case "GoOut":
-                    addFragment(OutFragment.newInstance());
+                    addFragment(OutListFragment.newInstance());
                     break;
                 case "SleepOut":
-                    addFragment(SleepOutFragment.newInstance());
+                    addFragment(SleepOutListFragment.newInstance());
                     break;
                 case "Notice":
                     String idx = getIntent().getStringExtra("notice_idx");
@@ -109,10 +112,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setCurrentFragmentTitle() {
-        if (getSupportFragmentManager().getBackStackEntryCount() <= 0) return;
+        if (getSupportFragmentManager().getBackStackEntryCount() <= 0) {
+            setTitle("메인");
+            return;
+        }
 
         BaseFragment cur = getCurrentFragment();
         setTitle(cur.getTitle());
+    }
+
+    private void logout() {
+        SharedPreferencesHelper.setPreference("email", "");
+        SharedPreferencesHelper.setPreference("pw", "");
+        SharedPreferencesHelper.setPreference("token", "");
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.deleteAll();
+        realm.commitTransaction();
     }
 
     @Override
@@ -133,6 +150,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_notice:
                 fragment = new NoticeFragment();
+                break;
+            case R.id.nav_logout:
+                logout();
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+                startActivity(intent);
+                this.finish();
                 break;
         }
 
